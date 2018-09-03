@@ -1,4 +1,5 @@
 import { ChildProcess, spawn } from 'child_process';
+import { downloadString } from './utilities';
 
 enum DownloadState {
     INITIALIZING,
@@ -8,8 +9,9 @@ enum DownloadState {
     COMPLETE,
 }
 
-export class DownloadTask {
+export class VideoDownloadTask {
     private downloadState: DownloadState = DownloadState.INITIALIZING;
+    private videoId: string | undefined;
     private errorMessage: string | undefined;
 
     constructor(private readonly url: string) {}
@@ -50,10 +52,34 @@ export class DownloadTask {
             .toString()
             .trim()
             .split('\n');
-
         for (const line of lines) {
             const parts = line.split(/\s+/);
             switch (parts[0]) {
+                case '[youtube]': {
+                    if (!this.videoId) {
+                        const videoId = parts[1].slice(0, -1);
+                        const videoInfoUrl = `https://youtube.com/get_video_info?video_id=${videoId}`;
+                        downloadString(videoInfoUrl)
+                            .then((response) => {
+                                let videoTitle;
+                                const titleRegex = /^title=(.*)$/;
+                                for (const query of response.split('&')) {
+                                    const result = titleRegex.exec(query);
+                                    if (result) {
+                                        const encodedTitle = result[1].replace(/\+/g, '%20');
+                                        videoTitle = decodeURIComponent(encodedTitle);
+                                        break;
+                                    }
+                                }
+                                console.log(`Title: "${videoTitle}"`);
+                            })
+                            .catch(() => {
+                                console.error(`Failed to retrieve video title for ${videoId}`);
+                            });
+                        this.videoId = videoId;
+                    }
+                    break;
+                }
                 case '[download]': {
                     if (parts[1] === 'Destination:') {
                         if (line.endsWith('.mp4')) {

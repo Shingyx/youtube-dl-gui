@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { URL } from 'url';
-import { DownloadTask } from './download-task';
 import { downloadFfmpegIfNotExists, downloadYouTubeDlIfNotExists } from './lib-updaters';
+import { VideoDownloadTask } from './video-download-task';
 
 async function main(): Promise<void> {
     const url = process.argv[2];
@@ -23,10 +23,10 @@ async function main(): Promise<void> {
 
     await Promise.all([downloadYouTubeDlIfNotExists(), downloadFfmpegIfNotExists()]);
 
-    const downloadTask = new DownloadTask(url);
+    const videoDownloadTask = new VideoDownloadTask(url);
     console.log(`Downloading "${url}"...`);
-    await downloadTask.download();
-    console.log(downloadTask.getErrorMessage() || 'Download complete!');
+    await videoDownloadTask.download();
+    console.log(videoDownloadTask.getErrorMessage() || 'Download complete!');
 }
 
 main().catch((err) => {
