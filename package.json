@@ -1,0 +1,28 @@
+{
+  "name": "youtube-dl-gui",
+  "version": "0.1.0",
+  "description": "GUI for youtube-dl",
+  "main": "dist/main.js",
+  "scripts": {
+    "prestart": "tsc",
+    "start": "node .",
+    "format": "npm run prettier && npm run tslint",
+    "prettier": "prettier --write \"src/**\"",
+    "tslint": "tslint --fix --project tsconfig.json"
+  },
+  "author": "Su-Shing Chen",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.88.0",
+    "yauzl": "^2.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.9.4",
+    "@types/request": "^2.47.1",
+    "@types/yauzl": "^2.9.0",
+    "prettier": "^1.14.2",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.0.3"
+  }
+}

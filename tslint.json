@@ -1,0 +1,26 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:latest",
+    "tslint-eslint-rules"
+  ],
+  "jsRules": {},
+  "rules": {
+    "no-console": false,
+    "prefer-const": false,
+
+    // Disable formatting rules to avoid conflicting with Prettier
+    "align": false,
+    "array-bracket-spacing": false,
+    "indent": false,
+    "object-literal-key-quotes": false,
+    "object-literal-sort-keys": false,
+    "only-arrow-functions": false,
+    "max-line-length": false,
+    "quotemark": false,
+    "semicolon": false,
+    "space-before-function-paren": false,
+    "trailing-comma": false
+  },
+  "rulesDirectory": []
+}
