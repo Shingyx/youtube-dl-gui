@@ -61,10 +61,12 @@ export async function downloadFfmpeg(): Promise<void> {
                                 return reject(err2);
                             }
                             const targetFile = `./bin/${extractFilename(entry.fileName)}`;
+                            const fileStream = fs.createWriteStream(targetFile);
                             readStream
-                                .on('error', reject)
-                                .on('end', () => zipFile.readEntry())
-                                .pipe(fs.createWriteStream(targetFile));
+                                .on('error', (e) => fileStream.destroy(e))
+                                .pipe(fileStream)
+                                .on('error', (e) => fs.unlink(targetFile, (e2) => reject(e2 || e)))
+                                .on('close', () => zipFile.readEntry());
                         });
                     } else {
                         zipFile.readEntry();

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { URL } from 'url';
-import { downloadFfmpegIfNotExists, downloadYouTubeDlIfNotExists } from './lib-updaters';
+import { downloadLibrariesIfNotExists } from './lib-updaters';
 import { VideoDownloadTask } from './video-download-task';
 
 async function main(): Promise<void> {
@@ -21,7 +21,7 @@ async function main(): Promise<void> {
         fs.mkdirSync('./bin');
     }
 
-    await Promise.all([downloadYouTubeDlIfNotExists(), downloadFfmpegIfNotExists()]);
+    await downloadLibrariesIfNotExists();
 
     const videoDownloadTask = new VideoDownloadTask(url);
     console.log(`Downloading "${url}"...`);
