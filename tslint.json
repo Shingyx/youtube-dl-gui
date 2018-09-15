@@ -8,6 +8,7 @@
   "rules": {
     "await-promise":true,
     "no-console": false,
+    "no-implicit-dependencies": [true, "dev"],
     "prefer-const": false,
 
     // Disable formatting rules to avoid conflicting with Prettier

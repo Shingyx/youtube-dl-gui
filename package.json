@@ -4,10 +4,10 @@
   "description": "GUI for youtube-dl",
   "main": "dist/main.js",
   "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "tsc",
-    "prestart": "npm run build",
-    "start": "node .",
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "npm run compile && electron-builder",
+    "dist:dir": "npm run dist -- --dir -c.compression=store -c.mac.identity=null",
     "format": "npm run prettier && npm run tslint",
     "prettier": "prettier --write \"src/**\"",
     "tslint": "tslint --fix --project tsconfig.json"
@@ -16,16 +16,22 @@
   "license": "ISC",
   "dependencies": {
     "request": "^2.88.0",
+    "source-map-support": "^0.5.9",
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
     "@types/node": "^10.9.4",
     "@types/request": "^2.47.1",
     "@types/yauzl": "^2.9.0",
+    "electron": "^2.0.9",
+    "electron-builder": "^20.28.4",
+    "electron-webpack": "^2.3.1",
+    "electron-webpack-ts": "^2.1.1",
     "prettier": "^1.14.2",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.0.3"
+    "typescript": "^3.0.3",
+    "webpack": "^4.19.0"
   }
 }

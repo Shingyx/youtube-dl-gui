@@ -1,4 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
+import fs from 'fs';
+import { URL } from 'url';
+import { downloadLibrariesIfNotExists } from './dependency-updaters';
 import { downloadString } from './utilities';
 
 enum DownloadState {
@@ -9,7 +12,26 @@ enum DownloadState {
     COMPLETE,
 }
 
-export class VideoDownloadTask {
+export async function downloadVideo(url: string): Promise<void> {
+    try {
+        new URL(url); // tslint:disable-line:no-unused-expression
+    } catch {
+        throw new Error(`"${url}" is not a valid URL`);
+    }
+
+    if (!fs.existsSync('./bin/')) {
+        fs.mkdirSync('./bin/');
+    }
+
+    await downloadLibrariesIfNotExists();
+
+    const videoDownloadTask = new VideoDownloadTask(url);
+    console.log(`Downloading "${url}"...`);
+    await videoDownloadTask.download();
+    console.log(videoDownloadTask.getErrorMessage() || 'Download complete!');
+}
+
+class VideoDownloadTask {
     private downloadState: DownloadState = DownloadState.INITIALIZING;
     private videoId: string | undefined;
     private errorMessage: string | undefined;
@@ -37,7 +59,7 @@ export class VideoDownloadTask {
             '--ffmpeg-location',
             './bin/ffmpeg.exe',
             '-o',
-            './test.%(ext)s', // './%(title)s.%(ext)s',
+            './bin/test.%(ext)s', // './%(title)s.%(ext)s',
             '-f',
             'worstvideo[ext=mp4]+worstaudio[ext=m4a]', // 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
             '-r',
