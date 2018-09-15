@@ -4,23 +4,28 @@
   "description": "GUI for youtube-dl",
   "main": "dist/main.js",
   "scripts": {
-    "dev": "electron-webpack dev",
+    "start": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "npm run compile && electron-builder",
     "dist:dir": "npm run dist -- --dir -c.compression=store -c.mac.identity=null",
     "format": "npm run prettier && npm run tslint",
-    "prettier": "prettier --write \"src/**\"",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "tslint": "tslint --fix --project tsconfig.json"
   },
   "author": "Su-Shing Chen",
   "license": "ISC",
   "dependencies": {
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
     "request": "^2.88.0",
     "source-map-support": "^0.5.9",
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
     "@types/node": "^10.9.4",
+    "@types/react": "^16.4.14",
+    "@types/react-dom": "^16.0.7",
     "@types/request": "^2.47.1",
     "@types/yauzl": "^2.9.0",
     "electron": "^2.0.9",
