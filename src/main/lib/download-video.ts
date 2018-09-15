@@ -1,8 +1,8 @@
 import { ChildProcess, spawn } from 'child_process';
 import fs from 'fs';
-import { URL } from 'url';
+import { isValidUrl } from '../../common/common-utilities';
 import { downloadLibrariesIfNotExists } from './dependency-updaters';
-import { downloadString } from './utilities';
+import { downloadString } from './download-utilities';
 
 enum DownloadState {
     INITIALIZING,
@@ -13,9 +13,7 @@ enum DownloadState {
 }
 
 export async function downloadVideo(url: string): Promise<void> {
-    try {
-        new URL(url); // tslint:disable-line:no-unused-expression
-    } catch {
+    if (!isValidUrl(url)) {
         throw new Error(`"${url}" is not a valid URL`);
     }
 

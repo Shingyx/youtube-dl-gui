@@ -1,7 +1,7 @@
 import fs from 'fs';
-import { URL } from 'url';
 import yauzl from 'yauzl';
-import { downloadBuffer, downloadFile, downloadJson, extractFilename } from './utilities';
+import { isValidUrl } from '../../common/common-utilities';
+import { downloadBuffer, downloadFile, downloadJson, extractFilename } from './download-utilities';
 
 export async function downloadLibrariesIfNotExists(): Promise<void> {
     await Promise.all([downloadYouTubeDlIfNotExists(), downloadFfmpegIfNotExists()]);
@@ -28,13 +28,12 @@ export async function downloadYouTubeDl(): Promise<void> {
         'https://api.github.com/repos/rg3/youtube-dl/releases/latest',
     );
 
-    let youTubeDlUrl: string;
-    try {
-        youTubeDlUrl = releaseJson.assets.find((a: any) => {
-            return a.name === 'youtube-dl.exe';
-        }).browser_download_url;
-        new URL(youTubeDlUrl); // tslint:disable-line:no-unused-expression
-    } catch {
+    const asset =
+        releaseJson &&
+        releaseJson.assets &&
+        releaseJson.find((a: any) => a.name === 'youtube-dl.exe');
+    const youTubeDlUrl = asset && asset.browser_download_url;
+    if (!youTubeDlUrl || isValidUrl(youTubeDlUrl)) {
         throw new Error('Could not read youtube-dl.exe download url');
     }
 

@@ -10,6 +10,11 @@
     "no-console": false,
     "no-implicit-dependencies": [true, "dev"],
     "prefer-const": false,
+    "typedef": [
+      true,
+      "call-signature",
+      "member-variable-declaration"
+    ],
 
     // Disable formatting rules to avoid conflicting with Prettier
     "align": false,

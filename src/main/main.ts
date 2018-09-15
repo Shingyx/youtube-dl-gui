@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import url from 'url';
+import { Events } from '../common/events';
 import { downloadVideo } from './lib/download-video';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -11,6 +12,7 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow();
     if (isDevelopment) {
         mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+        mainWindow.webContents.openDevTools();
     } else {
         mainWindow.loadURL(
             url.format({
@@ -25,9 +27,6 @@ app.on('ready', () => {
     });
 });
 
-let i = 0;
-
-ipcMain.addListener('test-event', (event: Electron.Event, videoUrl: string) => {
-    console.log(`${i++} ${videoUrl}`);
+ipcMain.addListener(Events.DOWNLOAD_VIDEO, (event: Electron.Event, videoUrl: string) => {
     downloadVideo(videoUrl).catch(console.error);
 });
