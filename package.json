@@ -2,7 +2,6 @@
   "name": "youtube-dl-gui",
   "version": "0.1.0",
   "description": "GUI for youtube-dl",
-  "main": "dist/main.js",
   "scripts": {
     "start": "electron-webpack dev",
     "compile": "electron-webpack",

@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import { clipboard, ipcRenderer } from 'electron';
 import React, { ChangeEvent, Component, FormEvent } from 'react';
 import { isValidUrl } from '../../common/common-utilities';
 import { Events } from '../../common/events';
@@ -16,21 +16,23 @@ export class UrlEntry extends Component<{}, IUrlEntryState> {
             url: '',
             isValid: false,
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onUrlChanged = this.onUrlChanged.bind(this);
+        this.pasteUrl = this.pasteUrl.bind(this);
+        this.submit = this.submit.bind(this);
     }
 
     public render(): JSX.Element {
         return (
-            <form className="UrlEntry" onSubmit={this.handleSubmit}>
+            <form className="UrlEntry" onSubmit={this.submit}>
                 <div className="UrlEntry-formDiv">
                     <label>Video URL</label>
                     <input
-                        className="UrlEntry-textField"
+                        className="UrlEntry-urlField"
                         type="text"
                         value={this.state.url}
-                        onChange={this.handleChange}
+                        onChange={this.onUrlChanged}
                     />
+                    <input type="button" value="Paste URL" onClick={this.pasteUrl} />
                 </div>
                 <div>
                     <input type="submit" value="Start" disabled={!this.state.isValid} />
@@ -39,18 +41,22 @@ export class UrlEntry extends Component<{}, IUrlEntryState> {
         );
     }
 
-    public handleChange(event: ChangeEvent<HTMLInputElement>): void {
-        const url = event.target.value;
-        const isValid = isValidUrl(url);
-        this.setState({ url, isValid });
+    private onUrlChanged(event: ChangeEvent<HTMLInputElement>): void {
+        this.updateUrl(event.target.value);
     }
 
-    public handleSubmit(event: FormEvent): void {
+    private pasteUrl(): void {
+        this.updateUrl(clipboard.readText());
+    }
+
+    private submit(event: FormEvent): void {
         ipcRenderer.send(Events.DOWNLOAD_VIDEO, this.state.url);
-        this.setState({
-            url: '',
-            isValid: false,
-        });
+        this.updateUrl('');
         event.preventDefault();
+    }
+
+    private updateUrl(url: string): void {
+        const isValid = isValidUrl(url);
+        this.setState({ url, isValid });
     }
 }

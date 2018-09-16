@@ -12,7 +12,8 @@
     margin-bottom: 0.5em;
 }
 
-.UrlEntry-textField {
+.UrlEntry-urlField {
     margin-left: 0.5em;
+    margin-right: 0.5em;
     flex: 1;
 }
