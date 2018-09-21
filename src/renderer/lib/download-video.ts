@@ -1,8 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
 import fs from 'fs';
-import { isValidUrl } from '../../common/common-utilities';
 import { downloadLibrariesIfNotExists } from './dependency-updaters';
-import { downloadString } from './download-utilities';
+import { downloadString, isValidUrl } from './utilities';
 
 enum DownloadState {
     INITIALIZING,

@@ -1,7 +1,7 @@
-import { clipboard, ipcRenderer } from 'electron';
+import { clipboard } from 'electron';
 import React, { ChangeEvent, Component, FormEvent } from 'react';
-import { isValidUrl } from '../../common/common-utilities';
-import { Events } from '../../common/events';
+import { downloadVideo } from '../lib/download-video';
+import { isValidUrl } from '../lib/utilities';
 import './UrlEntry.css';
 
 interface IUrlEntryState {
@@ -50,7 +50,7 @@ export class UrlEntry extends Component<{}, IUrlEntryState> {
     }
 
     private submit(event: FormEvent): void {
-        ipcRenderer.send(Events.DOWNLOAD_VIDEO, this.state.url);
+        downloadVideo(this.state.url.trim());
         this.updateUrl('');
         event.preventDefault();
     }

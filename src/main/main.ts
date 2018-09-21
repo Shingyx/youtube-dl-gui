@@ -1,8 +1,6 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import url from 'url';
-import { Events } from '../common/events';
-import { downloadVideo } from './lib/download-video';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -25,8 +23,4 @@ app.on('ready', () => {
     mainWindow.on('closed', () => {
         mainWindow = undefined;
     });
-});
-
-ipcMain.addListener(Events.DOWNLOAD_VIDEO, (event: Electron.Event, videoUrl: string) => {
-    downloadVideo(videoUrl).catch(console.error);
 });

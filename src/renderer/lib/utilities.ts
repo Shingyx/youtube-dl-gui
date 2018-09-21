@@ -1,5 +1,6 @@
 import fs from 'fs';
 import request from 'request';
+import { URL } from 'url';
 
 const wrappedRequest = request.defaults({
     headers: { 'user-agent': 'request' },
@@ -45,6 +46,15 @@ export function downloadFile(url: string, pathPrefix: string): Promise<string> {
 export function extractFilename(text: string): string {
     const result = /[^/]*$/.exec(text);
     return result ? result[0] : text;
+}
+
+export function isValidUrl(url: string): boolean {
+    try {
+        new URL(url); // tslint:disable-line:no-unused-expression
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 function download(url: string, options?: request.CoreOptions): Promise<any> {
