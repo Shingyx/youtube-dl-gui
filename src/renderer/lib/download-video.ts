@@ -1,7 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
 import fs from 'fs';
 import { downloadLibrariesIfNotExists } from './dependency-updaters';
-import { downloadString, isValidUrl } from './utilities';
+import { downloadString } from './utilities';
 
 enum DownloadState {
     INITIALIZING,
@@ -11,11 +11,7 @@ enum DownloadState {
     COMPLETE,
 }
 
-export async function downloadVideo(url: string): Promise<void> {
-    if (!isValidUrl(url)) {
-        throw new Error(`"${url}" is not a valid URL`);
-    }
-
+export async function downloadVideo(url: URL): Promise<void> {
     if (!fs.existsSync('./bin/')) {
         fs.mkdirSync('./bin/');
     }
@@ -33,7 +29,7 @@ class VideoDownloadTask {
     private videoId: string | undefined;
     private errorMessage: string | undefined;
 
-    constructor(private readonly url: string) {}
+    constructor(private readonly url: URL) {}
 
     public download(): Promise<void> {
         return new Promise((resolve) => {
@@ -62,7 +58,7 @@ class VideoDownloadTask {
             '-r',
             '2M',
             '--newline',
-            this.url,
+            this.url.href,
         ]);
     }
 

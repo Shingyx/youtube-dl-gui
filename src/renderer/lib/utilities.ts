@@ -1,6 +1,5 @@
 import fs from 'fs';
 import request from 'request';
-import { URL } from 'url';
 
 const wrappedRequest = request.defaults({
     headers: { 'user-agent': 'request' },
