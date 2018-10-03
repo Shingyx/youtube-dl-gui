@@ -1,6 +1,12 @@
 import fs from 'fs';
 import yauzl from 'yauzl';
-import { downloadBuffer, downloadFile, downloadJson, extractFilename } from './utilities';
+import {
+    downloadBuffer,
+    downloadFile,
+    downloadJson,
+    existsAsync,
+    extractFilename,
+} from './utilities';
 
 export async function downloadLibrariesIfNotExists(): Promise<void> {
     await Promise.all([downloadYouTubeDlIfNotExists(), downloadFfmpegIfNotExists()]);
@@ -65,11 +71,5 @@ export async function downloadFfmpeg(): Promise<void> {
                 })
                 .on('end', resolve);
         });
-    });
-}
-
-function existsAsync(file: string): Promise<boolean> {
-    return new Promise((resolve) => {
-        fs.access(file, fs.constants.F_OK, (err) => resolve(!err));
     });
 }

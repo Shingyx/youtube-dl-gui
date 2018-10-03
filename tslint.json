@@ -6,9 +6,12 @@
   ],
   "jsRules": {},
   "rules": {
-    "await-promise":true,
+    "await-promise": true,
+    "max-classes-per-file": false,
     "no-console": false,
+    "no-floating-promises": true,
     "no-implicit-dependencies": [true, "dev"],
+    "no-submodule-imports": false,
     "prefer-const": false,
     "typedef": [
       true,

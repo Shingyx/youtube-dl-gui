@@ -1,10 +1,11 @@
 import { clipboard } from 'electron';
 import React, { ChangeEvent, Component, FormEvent } from 'react';
+import { DownloadService } from '../lib/download-service';
 import { isValidUrl } from '../lib/utilities';
 import './UrlEntry.css';
 
 interface IUrlEntryProps {
-    onSubmit: (url: URL) => void;
+    downloadService: DownloadService;
 }
 
 interface IUrlEntryState {
@@ -20,7 +21,7 @@ export class UrlEntry extends Component<IUrlEntryProps, IUrlEntryState> {
 
     public render(): JSX.Element {
         return (
-            <form className="UrlEntry" onSubmit={(event) => this.submit(event)}>
+            <form id="UrlEntry" className="UrlEntry" onSubmit={(event) => this.submit(event)}>
                 <div className="UrlEntry-formDiv">
                     <label>Video URL</label>
                     <input
@@ -47,7 +48,7 @@ export class UrlEntry extends Component<IUrlEntryProps, IUrlEntryState> {
     }
 
     private submit(event: FormEvent): void {
-        this.props.onSubmit(new URL(this.state.urlText.trim()));
+        this.props.downloadService.queueDownload(this.state.urlText.trim());
         this.updateUrl('');
         event.preventDefault();
     }

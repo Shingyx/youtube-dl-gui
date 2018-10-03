@@ -6,7 +6,7 @@
     "start": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "npm run compile && electron-builder",
-    "dist:dir": "npm run dist -- --dir -c.compression=store -c.mac.identity=null",
+    "dist:dir": "npm run dist -- --dir -c.compression=store",
     "format": "npm run prettier && npm run tslint",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "tslint": "tslint --fix --project tsconfig.json"
@@ -16,6 +16,7 @@
   "dependencies": {
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
+    "react-virtualized": "^9.20.1",
     "request": "^2.88.0",
     "source-map-support": "^0.5.9",
     "yauzl": "^2.10.0"
@@ -25,6 +26,7 @@
     "@types/node": "^10.9.4",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
+    "@types/react-virtualized": "^9.18.7",
     "@types/request": "^2.47.1",
     "@types/yauzl": "^2.9.0",
     "electron": "^2.0.9",

@@ -42,6 +42,12 @@ export function downloadFile(url: string, pathPrefix: string): Promise<string> {
     });
 }
 
+export function existsAsync(file: string): Promise<boolean> {
+    return new Promise((resolve) => {
+        fs.access(file, (err) => resolve(!err));
+    });
+}
+
 export function extractFilename(text: string): string {
     const result = /[^/]*$/.exec(text);
     return result ? result[0] : text;

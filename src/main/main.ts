@@ -1,6 +1,5 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
-import url from 'url';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -12,12 +11,7 @@ app.on('ready', () => {
         mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
         mainWindow.webContents.openDevTools();
     } else {
-        mainWindow.loadURL(
-            url.format({
-                pathname: path.join(__dirname, 'index.html'),
-                protocol: 'file',
-            }),
-        );
+        mainWindow.loadURL(`file://${path.join(__dirname, 'index.html')}`);
     }
     mainWindow.on('closed', () => {
         mainWindow = undefined;
