@@ -1,5 +1,6 @@
 import fs from 'fs';
 import request from 'request';
+import { promisify } from 'util';
 
 const wrappedRequest = request.defaults({
     headers: { 'user-agent': 'request' },
@@ -18,28 +19,11 @@ export function downloadBuffer(url: string): Promise<Buffer> {
     return download(url, { encoding: null });
 }
 
-export function downloadFile(url: string, pathPrefix: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        let fileStream: fs.WriteStream | undefined;
-        const req = wrappedRequest(url)
-            .on('error', (err) => {
-                if (fileStream) {
-                    fileStream.destroy(err);
-                } else {
-                    reject(err);
-                }
-            })
-            .on('response', (response) => {
-                if (response.statusCode !== 200) {
-                    return reject(new Error(`Request failed, status code: ${response.statusCode}`));
-                }
-                const filename = pathPrefix + extractFilename(url);
-                fileStream = fs.createWriteStream(filename);
-                req.pipe(fileStream)
-                    .on('error', (err) => fs.unlink(filename, (err2) => reject(err2 || err)))
-                    .on('close', () => resolve(filename));
-            });
-    });
+export async function downloadFile(url: string, pathPrefix: string): Promise<string> {
+    const buffer = await downloadBuffer(url);
+    const filename = pathPrefix + extractFilename(url);
+    await promisify(fs.writeFile)(filename, buffer);
+    return filename;
 }
 
 export function existsAsync(file: string): Promise<boolean> {
