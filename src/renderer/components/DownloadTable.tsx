@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AutoSizer, Column, Table } from 'react-virtualized';
+import { AutoSizer, Column, Table, WindowScroller } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import { DownloadService } from '../lib/download-service';
 import { IVideoDownloadState } from '../lib/video-download';
@@ -33,36 +33,37 @@ export class DownloadTable extends Component<IDownloadTableProps, IDownloadTable
 
     public render(): JSX.Element {
         return (
-            <AutoSizer>
-                {({ height, width }) => {
-                    const header = document.getElementById('UrlEntry');
-                    if (header) {
-                        height -= header.scrollHeight;
-                    }
-                    return (
-                        <Table
-                            headerHeight={30}
-                            height={height}
-                            width={width}
-                            rowCount={this.state.rows.length}
-                            rowGetter={({ index }) => this.state.rows[index]}
-                            rowHeight={40}
-                        >
-                            <Column
-                                dataKey={'video'}
-                                flexGrow={1}
-                                flexShrink={1}
-                                width={1}
-                                label={'Video'}
-                            />
-                            <Column dataKey={'progress'} width={150} label={'Progress'} />
-                            <Column dataKey={'status'} width={200} label={'Status'} />
-                            <Column dataKey={'speed'} width={100} label={'Speed'} />
-                            <Column dataKey={'eta'} width={80} label={'ETA'} />
-                        </Table>
-                    );
-                }}
-            </AutoSizer>
+            <div className="DownloadTable">
+                <WindowScroller>
+                    {({ height }) => (
+                        <AutoSizer disableHeight>
+                            {({ width }) => (
+                                <Table
+                                    autoHeight
+                                    headerHeight={30}
+                                    height={height}
+                                    width={width}
+                                    rowCount={this.state.rows.length}
+                                    rowGetter={({ index }) => this.state.rows[index]}
+                                    rowHeight={40}
+                                >
+                                    <Column
+                                        dataKey={'video'}
+                                        flexGrow={1}
+                                        flexShrink={1}
+                                        width={1}
+                                        label={'Video'}
+                                    />
+                                    <Column dataKey={'progress'} width={150} label={'Progress'} />
+                                    <Column dataKey={'status'} width={200} label={'Status'} />
+                                    <Column dataKey={'speed'} width={100} label={'Speed'} />
+                                    <Column dataKey={'eta'} width={80} label={'ETA'} />
+                                </Table>
+                            )}
+                        </AutoSizer>
+                    )}
+                </WindowScroller>
+            </div>
         );
     }
 }
