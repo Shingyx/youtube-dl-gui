@@ -6,7 +6,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 let mainWindow: BrowserWindow | undefined;
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow();
+    mainWindow = new BrowserWindow({
+        title: 'YouTube DL GUI',
+    });
     if (isDevelopment) {
         mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
         mainWindow.webContents.openDevTools();

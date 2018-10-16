@@ -1,0 +1,22 @@
+.DownloadTable {
+    border-bottom: 1px solid #e0e0e0;
+}
+.Table {
+    margin-top: 6px;
+}
+.headerRow {
+    text-transform: none;
+}
+.evenRow,
+.oddRow {
+    border-top: 1px solid #e0e0e0;
+}
+.oddRow {
+    background-color: #fafafa;
+}
+.videoColumn {
+    text-align: left;
+}
+.unitsColumn {
+    text-align: right;
+}
