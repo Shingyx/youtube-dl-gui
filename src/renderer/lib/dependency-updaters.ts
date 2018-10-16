@@ -1,4 +1,7 @@
+import { execFile } from 'child_process';
 import fs from 'fs';
+import { toast } from 'react-toastify';
+import { promisify } from 'util';
 import yauzl from 'yauzl';
 import {
     downloadBuffer,
@@ -8,37 +11,54 @@ import {
     extractFilename,
 } from './utilities';
 
-export async function downloadLibrariesIfNotExists(): Promise<void> {
-    await Promise.all([downloadYouTubeDlIfNotExists(), downloadFfmpegIfNotExists()]);
-}
+export const initPromise = downloadDependencies().catch(() => {
+    toast.error('Failed to set up application');
+});
 
-export async function downloadYouTubeDlIfNotExists(): Promise<void> {
-    if (!(await existsAsync('./bin/youtube-dl.exe'))) {
-        console.log('Downloading youtube-dl...');
-        await downloadYouTubeDl();
-        console.log('youtube-dl download complete');
+async function downloadDependencies(): Promise<void> {
+    if (!(await existsAsync('./bin/'))) {
+        await promisify(fs.mkdir)('./bin/');
     }
+    await Promise.all([downloadYouTubeDl(), downloadFfmpeg()]);
 }
 
-export async function downloadFfmpegIfNotExists(): Promise<void> {
-    if (!(await existsAsync('./bin/ffmpeg.exe'))) {
-        console.log('Downloading ffmpeg...');
-        await downloadFfmpeg();
-        console.log('ffmpeg download complete');
-    }
-}
-
-export async function downloadYouTubeDl(): Promise<void> {
-    const releaseJson = await downloadJson(
+async function downloadYouTubeDl(): Promise<void> {
+    const releaseJsonPromise = downloadJson(
         'https://api.github.com/repos/rg3/youtube-dl/releases/latest',
     );
-    const youTubeDlUrl = releaseJson.assets.find((a: any) => a.name === 'youtube-dl.exe')
-        .browser_download_url;
+
+    if (await existsAsync('./bin/youtube-dl.exe')) {
+        let installedVersion: string | undefined;
+        try {
+            const { stdout } = await promisify(execFile)('./bin/youtube-dl.exe', ['--version']);
+            installedVersion = stdout.trim();
+        } catch {
+            toast.error('Failed to read installed youtube-dl version');
+        }
+        if (installedVersion && installedVersion === (await releaseJsonPromise).tag_name) {
+            return; // youtube-dl up to date
+        }
+        toast('Updating youtube-dl...');
+    } else {
+        toast('Downloading youtube-dl...');
+    }
+
+    const youTubeDlUrl = (await releaseJsonPromise).assets.find(
+        (a: any) => a.name === 'youtube-dl.exe',
+    ).browser_download_url;
 
     await downloadFile(youTubeDlUrl, './bin/');
+
+    toast('youtube-dl download complete');
 }
 
-export async function downloadFfmpeg(): Promise<void> {
+async function downloadFfmpeg(): Promise<void> {
+    if (await existsAsync('./bin/ffmpeg.exe')) {
+        return;
+    }
+
+    toast('Downloading ffmpeg...');
+
     const zipBuffer = await downloadBuffer(
         'https://ffmpeg.zeranoe.com/builds/win64/shared/ffmpeg-4.0.2-win64-shared.zip',
     );
@@ -72,4 +92,6 @@ export async function downloadFfmpeg(): Promise<void> {
                 .on('end', resolve);
         });
     });
+
+    toast('ffmpeg download complete');
 }

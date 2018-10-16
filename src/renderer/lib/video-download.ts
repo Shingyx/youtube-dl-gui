@@ -19,8 +19,8 @@ export interface IVideoDownloadState {
 }
 
 export class VideoDownloadTask {
-    private eventEmitter: EventEmitter = new EventEmitter();
-    private state: IVideoDownloadState = {
+    private readonly eventEmitter: EventEmitter = new EventEmitter();
+    private readonly state: IVideoDownloadState = {
         video: this.url,
         progress: 0,
         status: INITIALIZING,
@@ -62,7 +62,7 @@ export class VideoDownloadTask {
             '--ffmpeg-location',
             './bin/ffmpeg.exe',
             '-o',
-            './bin/test.%(ext)s', // './%(title)s.%(ext)s',
+            './bin/%(title)s.%(ext)s', // './%(title)s.%(ext)s',
             '-f',
             'worstvideo[ext=mp4]+worstaudio[ext=m4a]', // 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
             '-r',

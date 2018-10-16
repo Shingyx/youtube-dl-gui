@@ -5,6 +5,7 @@
       "es2018",
       "dom"
     ],
-    "jsx": "react"
+    "jsx": "react",
+    "noImplicitReturns": false
   }
 }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { DownloadService } from '../lib/download-service';
 import './App.css';
 import { DownloadTable } from './DownloadTable';
@@ -12,6 +14,7 @@ export class App extends Component {
             <div className="App">
                 <UrlEntry downloadService={this.downloadService} />
                 <DownloadTable downloadService={this.downloadService} />
+                <ToastContainer autoClose={3000} hideProgressBar />
             </div>
         );
     }
