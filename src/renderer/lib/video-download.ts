@@ -65,9 +65,7 @@ export class VideoDownloadTask {
             '-o',
             path.join(this.outputDirectory, '%(title)s.%(ext)s'),
             '-f',
-            'worstvideo[ext=mp4]+worstaudio[ext=m4a]', // 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
-            '-r',
-            '2M',
+            'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
             '--newline',
             this.url,
         ]);
