@@ -1,5 +1,6 @@
 import { clipboard } from 'electron';
 import React, { ChangeEvent, Component, FormEvent } from 'react';
+import { getOutputDirectory, promptMissingOutputDirectory } from '../lib/config';
 import { DownloadService } from '../lib/download-service';
 import { isValidUrl } from '../lib/utilities';
 import './UrlEntry.css';
@@ -48,8 +49,13 @@ export class UrlEntry extends Component<IUrlEntryProps, IUrlEntryState> {
     }
 
     private submit(event: FormEvent): void {
-        this.props.downloadService.queueDownload(this.state.urlText.trim());
-        this.updateUrl('');
+        const outputDirectory = getOutputDirectory();
+        if (outputDirectory) {
+            this.props.downloadService.queueDownload(this.state.urlText.trim(), outputDirectory);
+            this.updateUrl('');
+        } else {
+            promptMissingOutputDirectory();
+        }
         event.preventDefault();
     }
 

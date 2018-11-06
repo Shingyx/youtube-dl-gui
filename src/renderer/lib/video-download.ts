@@ -1,5 +1,6 @@
 import { ChildProcess, spawn } from 'child_process';
 import { EventEmitter } from 'events';
+import path from 'path';
 import { downloadString } from './utilities';
 
 const INITIALIZING = 'Initializing';
@@ -31,7 +32,7 @@ export class VideoDownloadTask {
     private completeMessage: string = 'Complete';
     private videoId: string | undefined;
 
-    constructor(private readonly url: string) {}
+    constructor(private readonly url: string, private readonly outputDirectory: string) {}
 
     public async download(): Promise<void> {
         await new Promise((resolve) => {
@@ -62,7 +63,7 @@ export class VideoDownloadTask {
             '--ffmpeg-location',
             './bin/ffmpeg.exe',
             '-o',
-            './bin/%(title)s.%(ext)s', // './%(title)s.%(ext)s',
+            path.join(this.outputDirectory, '%(title)s.%(ext)s'),
             '-f',
             'worstvideo[ext=mp4]+worstaudio[ext=m4a]', // 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
             '-r',

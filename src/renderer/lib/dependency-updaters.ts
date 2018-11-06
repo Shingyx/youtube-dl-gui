@@ -11,18 +11,7 @@ import {
     extractFilename,
 } from './utilities';
 
-export const initPromise = downloadDependencies().catch(() => {
-    toast.error('Failed to set up application');
-});
-
-async function downloadDependencies(): Promise<void> {
-    if (!(await existsAsync('./bin/'))) {
-        await promisify(fs.mkdir)('./bin/');
-    }
-    await Promise.all([downloadYouTubeDl(), downloadFfmpeg()]);
-}
-
-async function downloadYouTubeDl(): Promise<void> {
+export async function downloadYouTubeDl(): Promise<void> {
     const releaseJsonPromise = downloadJson(
         'https://api.github.com/repos/rg3/youtube-dl/releases/latest',
     );
@@ -52,7 +41,7 @@ async function downloadYouTubeDl(): Promise<void> {
     toast('youtube-dl download complete');
 }
 
-async function downloadFfmpeg(): Promise<void> {
+export async function downloadFfmpeg(): Promise<void> {
     if (await existsAsync('./bin/ffmpeg.exe')) {
         return;
     }
