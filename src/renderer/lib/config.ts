@@ -1,6 +1,5 @@
 import { remote } from 'electron';
 import fs from 'fs';
-import { toast } from 'react-toastify';
 import { promisify } from 'util';
 
 interface IConfig {
@@ -16,25 +15,7 @@ export function getOutputDirectory(): string | undefined {
     return CONFIG.outputDirectory;
 }
 
-export function promptMissingOutputDirectory(): void {
-    promptOutputDirectory(true).catch((err) => {
-        toast.error(err.message);
-    });
-}
-
-export async function loadConfig(): Promise<void> {
-    try {
-        const file = await promisify(fs.readFile)(CONFIG_PATH, 'utf8');
-        const configJson = JSON.parse(file);
-        if (typeof configJson.outputDirectory === 'string') {
-            CONFIG.outputDirectory = configJson.outputDirectory;
-        }
-    } catch {
-        // noop
-    }
-}
-
-async function promptOutputDirectory(missing: boolean = false): Promise<void> {
+export async function promptOutputDirectory({ missing }: { missing: boolean }): Promise<void> {
     if (missing) {
         await new Promise((resolve) => {
             remote.dialog.showMessageBox(
@@ -61,6 +42,18 @@ async function promptOutputDirectory(missing: boolean = false): Promise<void> {
     if (directory) {
         CONFIG.outputDirectory = directory;
         await saveConfig();
+    }
+}
+
+export async function loadConfig(): Promise<void> {
+    try {
+        const file = await promisify(fs.readFile)(CONFIG_PATH, 'utf8');
+        const configJson = JSON.parse(file);
+        if (typeof configJson.outputDirectory === 'string') {
+            CONFIG.outputDirectory = configJson.outputDirectory;
+        }
+    } catch {
+        // noop
     }
 }
 

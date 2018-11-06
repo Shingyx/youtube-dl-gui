@@ -1,12 +1,18 @@
+import { ipcRenderer } from 'electron';
 import fs from 'fs';
 import { toast } from 'react-toastify';
 import { promisify } from 'util';
-import { loadConfig } from './config';
+import { IpcMessages } from '../../common/ipc-messages';
+import { loadConfig, promptOutputDirectory } from './config';
 import { downloadFfmpeg, downloadYouTubeDl } from './dependency-updaters';
-import { existsAsync } from './utilities';
+import { defaultCatch, existsAsync } from './utilities';
 
 export const initPromise = init().catch(() => {
     toast.error('Failed to set up application');
+});
+
+ipcRenderer.on(IpcMessages.SetOutputDirectory, () => {
+    promptOutputDirectory({ missing: false }).catch(defaultCatch);
 });
 
 async function init(): Promise<void> {

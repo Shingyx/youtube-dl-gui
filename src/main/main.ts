@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'path';
+import { IpcMessages } from '../common/ipc-messages';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -23,3 +24,26 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
     app.quit();
 });
+
+const menu = Menu.buildFromTemplate([
+    {
+        label: 'File',
+        submenu: [
+            {
+                label: 'Set output directory',
+                click: () => {
+                    if (mainWindow) {
+                        mainWindow.webContents.send(IpcMessages.SetOutputDirectory);
+                    }
+                },
+            },
+            {
+                label: 'Exit',
+                click: () => {
+                    app.quit();
+                },
+            },
+        ],
+    },
+]);
+Menu.setApplicationMenu(menu);

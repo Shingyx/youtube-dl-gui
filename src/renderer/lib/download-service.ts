@@ -9,17 +9,7 @@ export class DownloadService {
     private readonly eventEmitter: EventEmitter = new EventEmitter();
     private readonly downloadTasks: { [url: string]: VideoDownloadTask } = {};
 
-    public queueDownload(url: string, outputDirectory: string): void {
-        this.downloadVideo(url, outputDirectory).catch((err) => {
-            toast.error(err.message);
-        });
-    }
-
-    public addDownloadStartedListener(fn: (downloadTask: VideoDownloadTask) => void): void {
-        this.eventEmitter.addListener(DOWNLOAD_STARTED_EVENT, fn);
-    }
-
-    private async downloadVideo(url: string, outputDirectory: string): Promise<void> {
+    public async queueDownload(url: string, outputDirectory: string): Promise<void> {
         if (this.downloadTasks[url]) {
             toast.warn(`Already downloading ${url}`);
             return;
@@ -32,5 +22,9 @@ export class DownloadService {
         await this.downloadTasks[url].download();
 
         delete this.downloadTasks[url];
+    }
+
+    public addDownloadStartedListener(fn: (downloadTask: VideoDownloadTask) => void): void {
+        this.eventEmitter.addListener(DOWNLOAD_STARTED_EVENT, fn);
     }
 }

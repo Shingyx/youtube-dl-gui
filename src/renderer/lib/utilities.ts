@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { toast } from 'react-toastify';
 import request from 'request';
 import { promisify } from 'util';
 
@@ -44,6 +45,10 @@ export function isValidUrl(url: string): boolean {
     } catch {
         return false;
     }
+}
+
+export function defaultCatch(error: Error): void {
+    toast.error(error.message);
 }
 
 function download(url: string, options?: request.CoreOptions): Promise<any> {

@@ -1,8 +1,8 @@
 import { clipboard } from 'electron';
 import React, { ChangeEvent, Component, FormEvent } from 'react';
-import { getOutputDirectory, promptMissingOutputDirectory } from '../lib/config';
+import { getOutputDirectory, promptOutputDirectory } from '../lib/config';
 import { DownloadService } from '../lib/download-service';
-import { isValidUrl } from '../lib/utilities';
+import { defaultCatch, isValidUrl } from '../lib/utilities';
 import './UrlEntry.css';
 
 interface IUrlEntryProps {
@@ -51,10 +51,12 @@ export class UrlEntry extends Component<IUrlEntryProps, IUrlEntryState> {
     private submit(event: FormEvent): void {
         const outputDirectory = getOutputDirectory();
         if (outputDirectory) {
-            this.props.downloadService.queueDownload(this.state.urlText.trim(), outputDirectory);
+            this.props.downloadService
+                .queueDownload(this.state.urlText.trim(), outputDirectory)
+                .catch(defaultCatch);
             this.updateUrl('');
         } else {
-            promptMissingOutputDirectory();
+            promptOutputDirectory({ missing: true }).catch(defaultCatch);
         }
         event.preventDefault();
     }
