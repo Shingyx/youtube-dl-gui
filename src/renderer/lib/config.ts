@@ -1,5 +1,6 @@
 import { remote } from 'electron';
 import fs from 'fs';
+import { toast } from 'react-toastify';
 import { promisify } from 'util';
 
 interface IConfig {
@@ -42,6 +43,7 @@ export async function promptOutputDirectory({ missing }: { missing: boolean }): 
     if (directory) {
         CONFIG.outputDirectory = directory;
         await saveConfig();
+        toast(`Updated output directory to "${directory}"`);
     }
 }
 
