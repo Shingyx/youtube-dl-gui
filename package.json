@@ -24,6 +24,7 @@
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@types/node": "^10.9.4",
     "@types/react": "^16.4.14",
