@@ -8,15 +8,18 @@ import { binariesPath } from './constants';
 import { downloadFfmpeg, downloadYouTubeDl } from './dependency-updaters';
 import { defaultCatch, existsAsync } from './utilities';
 
-export const initPromise = init().catch(() => {
-    toast.error('Failed to set up application');
+export const initPromise = init().catch((e) => {
+    toast.error(`Failed to set up application - ${e.message}`);
 });
 
 ipcRenderer.on(IpcMessage.SetOutputDirectory, () => {
     promptOutputDirectory({ missing: false }).catch(defaultCatch);
 });
-ipcRenderer.on(IpcMessage.ShowInfoMessage, (event: any, message: string) => {
+ipcRenderer.on(IpcMessage.ShowMessage, (event: any, message: string) => {
     toast(message);
+});
+ipcRenderer.on(IpcMessage.ShowInfoMessage, (event: any, message: string) => {
+    toast.info(message);
 });
 ipcRenderer.on(IpcMessage.ShowErrorMessage, (event: any, message: string) => {
     toast.error(message);

@@ -45,8 +45,15 @@ app.on('ready', () => {
                     click: () => sendMessageToWindow(IpcMessage.SetOutputDirectory),
                 },
                 {
+                    id: 'check-updates',
                     label: 'Check for updates',
-                    click: () => appUpdater.checkForUpdates(true),
+                    enabled: false,
+                    click: (menuItem) => {
+                        menuItem.enabled = false;
+                        void appUpdater.checkForUpdates(true).finally(() => {
+                            menuItem.enabled = true;
+                        });
+                    },
                 },
                 {
                     label: 'Exit',
@@ -57,7 +64,9 @@ app.on('ready', () => {
     ]);
     Menu.setApplicationMenu(menu);
 
-    appUpdater.checkForUpdates(false);
+    void appUpdater.checkForUpdates(false).finally(() => {
+        menu.getMenuItemById('check-updates').enabled = true;
+    });
 });
 
 app.on('window-all-closed', () => {
