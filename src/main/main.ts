@@ -1,8 +1,11 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import path from 'path';
-import { IpcMessages } from '../common/ipc-messages';
+import { IpcMessage } from '../common/ipc-message';
+import { AppUpdater } from './app-updater';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+
+const appUpdater = new AppUpdater(sendMessageToWindow, isDevelopment);
 
 let mainWindow: BrowserWindow | undefined;
 
@@ -19,31 +22,37 @@ app.on('ready', () => {
     mainWindow.on('closed', () => {
         mainWindow = undefined;
     });
+
+    const menu = Menu.buildFromTemplate([
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'Set output directory',
+                    click: () => sendMessageToWindow(IpcMessage.SetOutputDirectory),
+                },
+                {
+                    label: 'Check for updates',
+                    click: () => appUpdater.checkForUpdates(true),
+                },
+                {
+                    label: 'Exit',
+                    click: () => app.quit(),
+                },
+            ],
+        },
+    ]);
+    Menu.setApplicationMenu(menu);
+
+    appUpdater.checkForUpdates(false);
 });
 
 app.on('window-all-closed', () => {
     app.quit();
 });
 
-const menu = Menu.buildFromTemplate([
-    {
-        label: 'File',
-        submenu: [
-            {
-                label: 'Set output directory',
-                click: () => {
-                    if (mainWindow) {
-                        mainWindow.webContents.send(IpcMessages.SetOutputDirectory);
-                    }
-                },
-            },
-            {
-                label: 'Exit',
-                click: () => {
-                    app.quit();
-                },
-            },
-        ],
-    },
-]);
-Menu.setApplicationMenu(menu);
+function sendMessageToWindow(ipcMessage: IpcMessage, ...args: any[]): void {
+    if (mainWindow) {
+        mainWindow.webContents.send(ipcMessage, ...args);
+    }
+}
