@@ -2,18 +2,18 @@ import { remote } from 'electron';
 import fs from 'fs';
 import { toast } from 'react-toastify';
 import { promisify } from 'util';
+import { configPath } from './constants';
 
 interface IConfig {
     outputDirectory: string | undefined;
 }
 
-const CONFIG_PATH = './bin/config.json';
-const CONFIG: IConfig = {
+const config: IConfig = {
     outputDirectory: undefined,
 };
 
 export function getOutputDirectory(): string | undefined {
-    return CONFIG.outputDirectory;
+    return config.outputDirectory;
 }
 
 export async function promptOutputDirectory({ missing }: { missing: boolean }): Promise<void> {
@@ -41,7 +41,7 @@ export async function promptOutputDirectory({ missing }: { missing: boolean }): 
         );
     });
     if (directory) {
-        CONFIG.outputDirectory = directory;
+        config.outputDirectory = directory;
         await saveConfig();
         toast(`Updated output directory to "${directory}"`);
     }
@@ -49,10 +49,10 @@ export async function promptOutputDirectory({ missing }: { missing: boolean }): 
 
 export async function loadConfig(): Promise<void> {
     try {
-        const file = await promisify(fs.readFile)(CONFIG_PATH, 'utf8');
+        const file = await promisify(fs.readFile)(configPath, 'utf8');
         const configJson = JSON.parse(file);
         if (typeof configJson.outputDirectory === 'string') {
-            CONFIG.outputDirectory = configJson.outputDirectory;
+            config.outputDirectory = configJson.outputDirectory;
         }
     } catch {
         // noop
@@ -60,6 +60,6 @@ export async function loadConfig(): Promise<void> {
 }
 
 async function saveConfig(): Promise<void> {
-    const configStr = JSON.stringify(CONFIG, undefined, 2);
-    await promisify(fs.writeFile)(CONFIG_PATH, configStr);
+    const configStr = JSON.stringify(config, undefined, 2);
+    await promisify(fs.writeFile)(configPath, configStr);
 }

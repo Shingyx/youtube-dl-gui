@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { promisify } from 'util';
 import { IpcMessage } from '../../common/ipc-message';
 import { loadConfig, promptOutputDirectory } from './config';
+import { binariesPath } from './constants';
 import { downloadFfmpeg, downloadYouTubeDl } from './dependency-updaters';
 import { defaultCatch, existsAsync } from './utilities';
 
@@ -22,8 +23,8 @@ ipcRenderer.on(IpcMessage.ShowErrorMessage, (event: any, message: string) => {
 });
 
 async function init(): Promise<void> {
-    if (!(await existsAsync('./bin/'))) {
-        await promisify(fs.mkdir)('./bin/');
+    if (!(await existsAsync(binariesPath))) {
+        await promisify(fs.mkdir)(binariesPath);
     }
     await Promise.all([downloadYouTubeDl(), downloadFfmpeg(), loadConfig()]);
 }

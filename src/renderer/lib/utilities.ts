@@ -1,12 +1,8 @@
 import fs from 'fs';
+import path from 'path';
 import { toast } from 'react-toastify';
 import request from 'request';
 import { promisify } from 'util';
-
-const wrappedRequest = request.defaults({
-    headers: { 'user-agent': 'request' },
-    timeout: 5000,
-});
 
 export function downloadString(url: string): Promise<string> {
     return download(url);
@@ -22,7 +18,7 @@ export function downloadBuffer(url: string): Promise<Buffer> {
 
 export async function downloadFile(url: string, pathPrefix: string): Promise<string> {
     const buffer = await downloadBuffer(url);
-    const filename = pathPrefix + extractFilename(url);
+    const filename = path.join(pathPrefix, extractFilename(url));
     await promisify(fs.writeFile)(filename, buffer);
     return filename;
 }
@@ -52,8 +48,13 @@ export function defaultCatch(error: Error): void {
 }
 
 function download(url: string, options?: request.CoreOptions): Promise<any> {
+    options = {
+        headers: { 'user-agent': 'request' },
+        timeout: 5000,
+        ...options,
+    };
     return new Promise((resolve, reject) => {
-        wrappedRequest(url, options, (err, response, body) => {
+        request(url, options, (err, response, body) => {
             if (err) {
                 reject(err);
             } else if (response.statusCode !== 200) {

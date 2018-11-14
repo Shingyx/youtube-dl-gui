@@ -692,6 +692,13 @@
   resolved "https://registry.yarnpkg.com/@types/caseless/-/caseless-0.12.1.tgz#9794c69c8385d0192acc471a540d1f8e0d16218a"
   integrity sha512-FhlMa34NHp9K5MY1Uz8yb+ZvuX0pnvn3jScRSNAb75KHGB8d3rEU6hqMs3Z2vjuytcMfRg6c5CHMc3wtYyD2/A==
 
+"@types/electron-window-state@^2.0.33":
+  version "2.0.33"
+  resolved "https://registry.yarnpkg.com/@types/electron-window-state/-/electron-window-state-2.0.33.tgz#2f9c8f079c26c01704492ecdd641d1742a8ea1ea"
+  integrity sha512-DALqPobQwOuDlH9MpmqFkKHVgkkwbky7jjkZGs0jVzLhxwbb9iix2dXz90s3v6F2xKaLusUs9CcFT6/IgRY0AA==
+  dependencies:
+    electron "*"
+
 "@types/events@*":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
@@ -2799,7 +2806,16 @@ electron-webpack@2.3.1:
     webpack-merge "^4.1.4"
     yargs "^12.0.1"
 
-electron@^3.0.9:
+electron-window-state@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/electron-window-state/-/electron-window-state-5.0.2.tgz#dfc4f7dd0ca2d7116d1e246acf1683b0bdfd45c2"
+  integrity sha512-fcSS+ZxfY8K14Ig7XI0/PHZ54wBr1LEPEgMTRlFn799xDQJ9UsP8Ti+NNb7JhvRaJBsL7MWvtY6vWBk4BpVfMw==
+  dependencies:
+    deep-equal "^1.0.1"
+    jsonfile "^4.0.0"
+    mkdirp "^0.5.1"
+
+electron@*, electron@^3.0.9:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/electron/-/electron-3.0.9.tgz#79bd25dfd5496918a00d579e702fb83082f1a036"
   integrity sha512-OoSoeUWo9PzbArgrwS1yTfTRSlpXmIgrFGWUuUZCjKAk4DGR70elHDNeRnnBJ9NTwXXZVifChcfx73Ah3GnlVQ==

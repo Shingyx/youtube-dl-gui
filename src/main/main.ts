@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu } from 'electron';
+import windowState from 'electron-window-state';
 import path from 'path';
 import { IpcMessage } from '../common/ipc-message';
 import { AppUpdater } from './app-updater';
@@ -10,9 +11,21 @@ const appUpdater = new AppUpdater(sendMessageToWindow, isDevelopment);
 let mainWindow: BrowserWindow | undefined;
 
 app.on('ready', () => {
+    const mainWindowState = windowState({
+        defaultWidth: 800,
+        defaultHeight: 600,
+    });
+
     mainWindow = new BrowserWindow({
         title: 'YouTube DL GUI',
+        x: mainWindowState.x,
+        y: mainWindowState.y,
+        width: mainWindowState.width,
+        height: mainWindowState.height,
     });
+
+    mainWindowState.manage(mainWindow);
+
     if (isDevelopment) {
         mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
         mainWindow.webContents.openDevTools();

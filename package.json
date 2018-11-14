@@ -1,6 +1,6 @@
 {
   "name": "youtube-dl-gui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "GUI for youtube-dl",
   "scripts": {
     "start": "electron-webpack dev",
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "electron-updater": "^3.2.3",
+    "electron-window-state": "^5.0.2",
     "rc-progress": "^2.2.6",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
+    "@types/electron-window-state": "^2.0.33",
     "@types/node": "^10.12.7",
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
@@ -47,6 +49,9 @@
   },
   "build": {
     "appId": "com.github.shingyx.youtubedlgui",
-    "productName": "YouTube DL GUI"
+    "productName": "YouTube DL GUI",
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    }
   }
 }
