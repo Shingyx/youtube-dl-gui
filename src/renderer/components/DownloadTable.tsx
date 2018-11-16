@@ -13,25 +13,37 @@ interface IDownloadTableProps {
 }
 
 interface IDownloadTableState {
-    rows: IVideoDownloadState[];
+    downloadStates: { [id: number]: IVideoDownloadState };
+    currentIds: number[];
 }
 
 export class DownloadTable extends Component<IDownloadTableProps, IDownloadTableState> {
     public state: IDownloadTableState = {
-        rows: [],
+        downloadStates: {},
+        currentIds: [],
     };
+    private nextId: number = 0;
 
     constructor(props: IDownloadTableProps, context?: any) {
         super(props, context);
         this.props.downloadService.addDownloadStartedListener((downloadTask) => {
-            const rows = this.state.rows;
-            const index = rows.length; // TODO key by something else to support removing rows
-            rows[index] = downloadTask.getState();
-            this.setState({ rows });
-            downloadTask.addStateChangedListener((state) => {
-                rows[index] = state;
-                this.setState({ rows });
+            const id = this.nextId;
+            this.setState({
+                downloadStates: {
+                    ...this.state.downloadStates,
+                    [id]: downloadTask.getState(),
+                },
+                currentIds: [...this.state.currentIds, id],
             });
+            downloadTask.addStateChangedListener((state) => {
+                this.setState({
+                    downloadStates: {
+                        ...this.state.downloadStates,
+                        [id]: state,
+                    },
+                });
+            });
+            this.nextId++;
         });
     }
 
@@ -56,8 +68,8 @@ export class DownloadTable extends Component<IDownloadTableProps, IDownloadTable
                 headerHeight={30}
                 height={height}
                 width={width}
-                rowCount={this.state.rows.length}
-                rowGetter={({ index }) => this.state.rows[index]}
+                rowCount={this.state.currentIds.length}
+                rowGetter={({ index }) => this.state.downloadStates[this.state.currentIds[index]]}
                 rowHeight={35}
                 className={'Table'}
                 rowClassName={({ index }) => {
