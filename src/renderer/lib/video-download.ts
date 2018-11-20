@@ -2,7 +2,7 @@ import { ChildProcess, spawn } from 'child_process';
 import { EventEmitter } from 'events';
 import path from 'path';
 import { ffmpegPath, youTubeDlPath } from './constants';
-import { downloadString } from './utilities';
+import { downloadString, sanitizeFilename } from './utilities';
 
 const INITIALIZING = 'Initializing';
 const DOWNLOADING_VIDEO = 'Downloading video';
@@ -17,6 +17,8 @@ export interface IVideoDownloadState {
     status: string;
     speed: string;
     eta: string;
+    outputDirectory: string;
+    filename: string | undefined;
     done: boolean;
 }
 
@@ -28,6 +30,8 @@ export class VideoDownloadTask {
         status: INITIALIZING,
         speed: '-',
         eta: '-',
+        outputDirectory: this.outputDirectory,
+        filename: undefined,
         done: false,
     };
     private completeMessage: string = 'Complete';
@@ -129,6 +133,11 @@ export class VideoDownloadTask {
         }
     }
 
+    /**
+     * Fetches the video title and updates the state. This is required since certain characters
+     * cannot be read from the spawned process.
+     * @param videoId YouTube video ID.
+     */
     private async fetchVideoTitle(videoId: string): Promise<void> {
         let videoTitle;
         try {
@@ -148,6 +157,7 @@ export class VideoDownloadTask {
         }
         if (videoTitle && !this.state.done) {
             this.state.video = videoTitle;
+            this.state.filename = sanitizeFilename(`${videoTitle}.mp4`);
             this.emitStateChanged();
         }
     }

@@ -1,5 +1,13 @@
+import { remote, shell } from 'electron';
+import path from 'path';
 import React, { Component } from 'react';
-import { AutoSizer, Column, Table, WindowScroller } from 'react-virtualized';
+import {
+    AutoSizer,
+    Column,
+    RowMouseEventHandlerParams,
+    Table,
+    WindowScroller,
+} from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import { DownloadService } from '../lib/download-service';
 import { IVideoDownloadState } from '../lib/video-download';
@@ -75,6 +83,10 @@ export class DownloadTable extends Component<IDownloadTableProps, IDownloadTable
                 rowClassName={({ index }) => {
                     return index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
                 }}
+                onRowRightClick={({ index }: RowMouseEventHandlerParams) => {
+                    const downloadState = this.state.downloadStates[this.state.currentIds[index]];
+                    this.showContextMenu(index, downloadState);
+                }}
             >
                 <Column
                     dataKey={'video'}
@@ -101,5 +113,41 @@ export class DownloadTable extends Component<IDownloadTableProps, IDownloadTable
                 <Column dataKey={'eta'} width={60} label={'ETA'} className={'unitsColumn'} />
             </Table>
         );
+    }
+
+    private showContextMenu(index: number, downloadState: IVideoDownloadState): void {
+        const { done, outputDirectory, filename } = downloadState;
+        const videoPath = filename && path.join(outputDirectory, filename);
+
+        const menu = remote.Menu.buildFromTemplate([
+            {
+                label: 'Play video',
+                enabled: done,
+                click: () => {
+                    const toOpen = videoPath || outputDirectory;
+                    shell.openItem(toOpen);
+                },
+            },
+            {
+                label: 'Open containing folder',
+                click: () => {
+                    if (videoPath) {
+                        shell.showItemInFolder(videoPath);
+                    } else {
+                        shell.openItem(outputDirectory);
+                    }
+                },
+            },
+            {
+                label: 'Remove from history',
+                enabled: done,
+                click: () => {
+                    const { currentIds } = this.state;
+                    currentIds.splice(index, 1);
+                    this.setState({ currentIds });
+                },
+            },
+        ]);
+        menu.popup({ window: remote.getCurrentWindow() });
     }
 }
