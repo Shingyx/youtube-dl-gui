@@ -19,7 +19,7 @@ install:
   - yarn --frozen-lockfile
 
 script:
-  - yarn dist --win
+  - yarn test && yarn dist --win
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine

@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "GUI for youtube-dl",
   "scripts": {
+    "test": "jest",
+    "posttest": "npm run format",
     "start": "electron-webpack dev",
     "dist": "electron-webpack && electron-builder",
     "dist:dir": "npm run dist -- --dir -c.compression=store",
     "format": "npm run prettier && npm run tslint",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "prettier": "prettier --write \"{src,test}/**/*.{ts,tsx,css}\"",
     "tslint": "tslint --fix --project tsconfig.json"
   },
   "author": "Su-Shing Chen",
@@ -28,6 +30,7 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
     "@types/electron-window-state": "^2.0.33",
+    "@types/jest": "^23.3.9",
     "@types/node": "^10.12.7",
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
@@ -40,12 +43,28 @@
     "electron-builder": "^20.34.0",
     "electron-webpack": "2.3.1",
     "electron-webpack-ts": "^3.0.0",
+    "jest": "^23.6.0",
     "prettier": "^1.15.2",
     "rimraf": "^2.6.2",
+    "ts-jest": "^23.10.4",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.1.6",
     "webpack": "^4.25.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.test.ts"
+    ]
   },
   "build": {
     "appId": "com.github.shingyx.youtubedlgui",
