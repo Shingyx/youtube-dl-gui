@@ -4,13 +4,13 @@
   "description": "GUI for youtube-dl",
   "scripts": {
     "test": "jest",
-    "posttest": "npm run format",
+    "posttest": "yarn tslint && yarn prettier",
     "start": "electron-webpack dev",
     "dist": "electron-webpack && electron-builder",
-    "dist:dir": "npm run dist -- --dir -c.compression=store",
-    "format": "npm run prettier && npm run tslint",
-    "prettier": "prettier --write \"{src,test}/**/*.{ts,tsx,css}\"",
-    "tslint": "tslint --fix --project tsconfig.json"
+    "dist:dir": "yarn dist --dir -c.compression=store",
+    "tslint": "tslint --project tsconfig.json",
+    "prettier": "prettier --list-different \"{src,test}/**/*.{ts,tsx,css}\"",
+    "format": "yarn tslint --fix && yarn prettier --write"
   },
   "author": "Su-Shing Chen",
   "license": "ISC",

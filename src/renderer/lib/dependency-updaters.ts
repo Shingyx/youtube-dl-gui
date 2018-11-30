@@ -51,7 +51,7 @@ export async function downloadFfmpeg(): Promise<void> {
     toast('Downloading ffmpeg...');
 
     const zipBuffer = await downloadBuffer(
-        'https://ffmpeg.zeranoe.com/builds/win64/shared/ffmpeg-4.0.2-win64-shared.zip',
+        'https://ffmpeg.zeranoe.com/builds/win64/shared/ffmpeg-4.1-win64-shared.zip',
     );
 
     await new Promise((resolve, reject) => {
