@@ -2,7 +2,7 @@ os: osx
 osx_image: xcode8.3
 
 language: node_js
-node_js: "10"
+node_js: '10'
 
 env:
   global:
@@ -12,8 +12,8 @@ env:
 cache:
   directories:
     - node_modules
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
+    - $ELECTRON_CACHE
+    - $ELECTRON_BUILDER_CACHE
 
 install:
   - yarn --frozen-lockfile
@@ -26,7 +26,7 @@ before_cache:
 
 branches:
   except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+    - '/^v\\d+\\.\\d+\\.\\d+$/'
 
 notifications:
   email: false
