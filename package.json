@@ -2,18 +2,18 @@
   "name": "youtube-dl-gui",
   "version": "1.1.0",
   "description": "GUI for youtube-dl",
+  "license": "MIT",
+  "author": "Su-Shing Chen",
   "scripts": {
-    "test": "jest",
-    "posttest": "yarn tslint && yarn prettier",
-    "start": "electron-webpack dev",
     "dist": "electron-webpack && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store",
-    "tslint": "tslint --project tsconfig.json",
+    "format": "yarn tslint --fix && yarn prettier --write",
     "prettier": "prettier --list-different \"{src,test}/**/*.{ts,tsx,css}\"",
-    "format": "yarn tslint --fix && yarn prettier --write"
+    "start": "electron-webpack dev",
+    "test": "jest",
+    "posttest": "yarn tslint && yarn prettier",
+    "tslint": "tslint --project tsconfig.json"
   },
-  "author": "Su-Shing Chen",
-  "license": "ISC",
   "dependencies": {
     "electron-updater": "^4.0.6",
     "electron-window-state": "^5.0.3",
