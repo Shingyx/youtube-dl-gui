@@ -22,7 +22,7 @@ script:
   - yarn test && yarn dist --win
 
 before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
+  - rm -rf $ELECTRON_BUILDER_CACHE/wine
 
 branches:
   except:
