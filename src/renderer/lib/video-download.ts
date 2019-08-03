@@ -143,12 +143,12 @@ export class VideoDownloadTask {
         try {
             const videoInfoUrl = `https://youtube.com/get_video_info?video_id=${videoId}`;
             const response = await downloadString(videoInfoUrl);
-            const titleRegex = /^title=(.*)$/;
             for (const query of response.split('&')) {
-                const result = titleRegex.exec(query);
-                if (result) {
-                    const encodedTitle = result[1].replace(/\+/g, '%20');
-                    videoTitle = decodeURIComponent(encodedTitle);
+                const [key, value] = query.split('=');
+                if (key === 'player_response') {
+                    const decoded = decodeURIComponent(value.replace(/\+/g, '%20'));
+                    const json = JSON.parse(decoded);
+                    videoTitle = json.videoDetails.title;
                     break;
                 }
             }
