@@ -8,7 +8,7 @@
     "dist": "electron-webpack && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store",
     "format": "yarn tslint --fix && yarn prettier --write",
-    "prettier": "prettier --list-different \"{src,test}/**/*.{ts,tsx,css}\"",
+    "prettier": "prettier --check \"{src,test}/**/*.{ts,tsx,css}\"",
     "start": "electron-webpack dev",
     "test": "jest",
     "posttest": "yarn tslint && yarn prettier",
