@@ -52,6 +52,9 @@
     "typescript": "^3.3.3333",
     "webpack": "^4.29.6"
   },
+  "resolutions": {
+    "html-loader": "Shingyx/html-loader#update-deps-with-dist"
+  },
   "jest": {
     "transform": {
       "\\.(ts|tsx)$": "ts-jest"
