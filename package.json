@@ -43,7 +43,7 @@
     "electron-builder": "^20.38.5",
     "electron-webpack": "2.6.2",
     "electron-webpack-ts": "^3.1.1",
-    "jest": "^24.1.0",
+    "jest": "^24.8.0",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
     "ts-jest": "^24.0.0",
