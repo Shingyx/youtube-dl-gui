@@ -64,16 +64,18 @@ export class VideoDownloadTask {
     }
 
     private spawnDownloadProcess(): ChildProcess {
-        return spawn(youTubeDlPath, [
-            '--ffmpeg-location',
-            ffmpegPath,
+        const args = [
             '-o',
             path.join(this.outputDirectory, '%(title)s.%(ext)s'),
             '-f',
             'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
             '--newline',
             this.url,
-        ]);
+        ];
+        if (process.platform === 'win32') {
+            args.unshift('--ffmpeg-location', ffmpegPath);
+        }
+        return spawn(youTubeDlPath, args);
     }
 
     private processData(data: Buffer): void {

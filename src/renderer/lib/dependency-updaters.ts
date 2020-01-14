@@ -4,7 +4,7 @@ import path from 'path';
 import { toast } from 'react-toastify';
 import { promisify } from 'util';
 import yauzl from 'yauzl';
-import { binariesPath, ffmpegPath, youTubeDlPath } from './constants';
+import { binariesPath, ffmpegPath, youTubeDlName, youTubeDlPath } from './constants';
 import {
     downloadBuffer,
     downloadFile,
@@ -15,7 +15,7 @@ import {
 
 export async function downloadYouTubeDl(): Promise<void> {
     const releaseJsonPromise = downloadJson(
-        'https://api.github.com/repos/rg3/youtube-dl/releases/latest',
+        'https://api.github.com/repos/ytdl-org/youtube-dl/releases/latest',
     );
 
     if (await existsAsync(youTubeDlPath)) {
@@ -35,16 +35,19 @@ export async function downloadYouTubeDl(): Promise<void> {
     }
 
     const youTubeDlUrl = (await releaseJsonPromise).assets.find(
-        (a: any) => a.name === 'youtube-dl.exe',
+        (a: any) => a.name === youTubeDlName,
     ).browser_download_url;
 
     await downloadFile(youTubeDlUrl, binariesPath);
+    if (process.platform !== 'win32') {
+        await fs.promises.chmod(youTubeDlPath, '755');
+    }
 
     toast('youtube-dl download complete');
 }
 
 export async function downloadFfmpeg(): Promise<void> {
-    if (await existsAsync(ffmpegPath)) {
+    if (process.platform !== 'win32' || (await existsAsync(ffmpegPath))) {
         return;
     }
 

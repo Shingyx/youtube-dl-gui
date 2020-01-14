@@ -1,7 +1,6 @@
 import { remote } from 'electron';
 import fs from 'fs';
 import { toast } from 'react-toastify';
-import { promisify } from 'util';
 import { configPath } from './constants';
 
 interface IConfig {
@@ -49,7 +48,7 @@ export async function promptOutputDirectory({ missing }: { missing: boolean }): 
 
 export async function loadConfig(): Promise<void> {
     try {
-        const file = await promisify(fs.readFile)(configPath, 'utf8');
+        const file = await fs.promises.readFile(configPath, 'utf8');
         const configJson = JSON.parse(file);
         if (typeof configJson.outputDirectory === 'string') {
             config.outputDirectory = configJson.outputDirectory;
@@ -61,5 +60,5 @@ export async function loadConfig(): Promise<void> {
 
 async function saveConfig(): Promise<void> {
     const configStr = JSON.stringify(config, undefined, 2);
-    await promisify(fs.writeFile)(configPath, configStr);
+    await fs.promises.writeFile(configPath, configStr);
 }

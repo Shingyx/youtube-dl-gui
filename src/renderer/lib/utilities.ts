@@ -2,7 +2,6 @@ import fs from 'fs';
 import fetch, { Response } from 'node-fetch';
 import path from 'path';
 import { toast } from 'react-toastify';
-import { promisify } from 'util';
 
 export async function downloadString(url: string): Promise<string> {
     const response = await wrappedFetch(url);
@@ -22,7 +21,7 @@ export async function downloadBuffer(url: string): Promise<Buffer> {
 export async function downloadFile(url: string, pathPrefix: string): Promise<string> {
     const buffer = await downloadBuffer(url);
     const filename = path.join(pathPrefix, extractFilename(url));
-    await promisify(fs.writeFile)(filename, buffer);
+    await fs.promises.writeFile(filename, buffer);
     return filename;
 }
 
@@ -65,10 +64,13 @@ export function sanitizeFilename(filename: string): string {
     return result || '_';
 }
 
-export function existsAsync(file: string): Promise<boolean> {
-    return new Promise((resolve) => {
-        fs.access(file, (err) => resolve(!err));
-    });
+export async function existsAsync(file: string): Promise<boolean> {
+    try {
+        await fs.promises.access(file);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 export function extractFilename(text: string): string {
