@@ -56,9 +56,7 @@
     "html-loader": "Shingyx/html-loader#update-deps-with-dist"
   },
   "jest": {
-    "transform": {
-      "\\.(ts|tsx)$": "ts-jest"
-    }
+    "preset": "ts-jest"
   },
   "build": {
     "appId": "com.github.shingyx.youtubedlgui",
