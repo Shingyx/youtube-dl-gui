@@ -39,7 +39,7 @@
     "@types/react-virtualized": "^9.18.12",
     "@types/semver": "^5.5.0",
     "@types/yauzl": "^2.9.1",
-    "electron": "^3.0.9",
+    "electron": "^7.2.4",
     "electron-builder": "^20.38.5",
     "electron-webpack": "2.6.2",
     "electron-webpack-ts": "^3.1.1",
