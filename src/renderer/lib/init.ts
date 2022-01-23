@@ -10,25 +10,25 @@ import { downloadFfmpeg, downloadYtDlp } from './dependency-updaters';
 import { defaultCatch, existsAsync } from './utilities';
 
 export const initPromise = init().catch((e) => {
-    toast.error(`Failed to set up application - ${e.message}`);
+  toast.error(`Failed to set up application - ${e.message}`);
 });
 
 ipcRenderer.on(IpcMessage.SetOutputDirectory, () => {
-    promptOutputDirectory({ missing: false }).catch(defaultCatch);
+  promptOutputDirectory({ missing: false }).catch(defaultCatch);
 });
 ipcRenderer.on(IpcMessage.ShowMessage, (event: any, message: string) => {
-    toast(message);
+  toast(message);
 });
 ipcRenderer.on(IpcMessage.ShowInfoMessage, (event: any, message: string) => {
-    toast.info(message);
+  toast.info(message);
 });
 ipcRenderer.on(IpcMessage.ShowErrorMessage, (event: any, message: string) => {
-    toast.error(message);
+  toast.error(message);
 });
 
 async function init(): Promise<void> {
-    if (!(await existsAsync(binariesPath))) {
-        await promisify(fs.mkdir)(binariesPath);
-    }
-    await Promise.all([downloadYtDlp(), downloadFfmpeg(), loadConfig()]);
+  if (!(await existsAsync(binariesPath))) {
+    await promisify(fs.mkdir)(binariesPath);
+  }
+  await Promise.all([downloadYtDlp(), downloadFfmpeg(), loadConfig()]);
 }

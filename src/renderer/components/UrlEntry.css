@@ -1,19 +1,19 @@
 .UrlEntry {
-    background-color: #222;
-    padding: 1em;
-    color: white;
+  background-color: #222;
+  padding: 1em;
+  color: white;
 }
 
 .UrlEntry-formDiv {
-    display: flex;
-    align-items: center;
-    margin-left: 80px;
-    margin-right: 80px;
-    margin-bottom: 0.5em;
+  display: flex;
+  align-items: center;
+  margin-left: 80px;
+  margin-right: 80px;
+  margin-bottom: 0.5em;
 }
 
 .UrlEntry-urlField {
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    flex: 1;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  flex: 1;
 }

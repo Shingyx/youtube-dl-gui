@@ -1,10 +1,7 @@
 {
   "extends": "./node_modules/electron-webpack/tsconfig-base.json",
   "compilerOptions": {
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["es2018", "dom"],
     "jsx": "react",
     "noImplicitReturns": false,
     "useUnknownInCatchVariables": false

@@ -1,22 +1,22 @@
 .DownloadTable {
-    border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
 }
 .Table {
-    margin-top: 6px;
+  margin-top: 6px;
 }
 .headerRow {
-    text-transform: none;
+  text-transform: none;
 }
 .evenRow,
 .oddRow {
-    border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
 }
 .oddRow {
-    background-color: #fafafa;
+  background-color: #fafafa;
 }
 .videoColumn {
-    text-align: left;
+  text-align: left;
 }
 .unitsColumn {
-    text-align: right;
+  text-align: right;
 }

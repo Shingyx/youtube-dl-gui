@@ -2,18 +2,24 @@
   "name": "youtube-dl-gui",
   "version": "1.3.0",
   "description": "GUI for yt-dlp",
+  "repository": "https://github.com/Shingyx/youtube-dl-gui",
   "license": "MIT",
   "author": "Su-Shing Chen",
   "scripts": {
     "build": "electron-webpack",
     "dist": "yarn build && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store",
-    "format": "yarn lint --fix && yarn prettier --write",
-    "prettier": "prettier --check \"{src,test}/**/*.{ts,tsx,css}\"",
+    "fix": "yarn lint:fix && yarn format",
+    "format": "yarn format:check --write",
+    "format:check": "prettier --check \"./**/*.{css,json,md,ts,tsx,yml}\" --ignore-path .gitignore",
+    "lint": "eslint --ext .ts,.tsx src test",
+    "lint:fix": "yarn lint --fix",
     "start": "electron-webpack dev",
     "test": "jest",
-    "posttest": "yarn lint && yarn prettier",
-    "lint": "eslint --ext .ts,.tsx src test"
+    "posttest": "yarn lint && yarn format:check"
+  },
+  "jest": {
+    "preset": "ts-jest"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
@@ -56,9 +62,6 @@
     "ts-jest": "^27.1.3",
     "typescript": "^4.5.5",
     "webpack": "^4.42.1"
-  },
-  "jest": {
-    "preset": "ts-jest"
   },
   "build": {
     "appId": "com.github.shingyx.youtubedlgui",
