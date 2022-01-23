@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import { toast } from 'react-toastify';
+
 import { initPromise } from './init';
 import { VideoDownloadTask } from './video-download';
 

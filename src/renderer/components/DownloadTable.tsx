@@ -1,4 +1,8 @@
-import { remote, shell } from 'electron';
+import 'react-virtualized/styles.css';
+import './DownloadTable.css';
+
+import * as remote from '@electron/remote';
+import { shell } from 'electron';
 import path from 'path';
 import React, { Component } from 'react';
 import {
@@ -8,13 +12,11 @@ import {
     Table,
     WindowScroller,
 } from 'react-virtualized';
-import 'react-virtualized/styles.css';
+
 import { DownloadService } from '../lib/download-service';
 import { IVideoDownloadState } from '../lib/video-download';
-import './DownloadTable.css';
 
-// tslint:disable-next-line:no-var-requires
-const { Line } = require('rc-progress');
+const { Line } = require('rc-progress'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 interface IDownloadTableProps {
     downloadService: DownloadService;
@@ -125,7 +127,7 @@ export class DownloadTable extends Component<IDownloadTableProps, IDownloadTable
                 enabled: done,
                 click: () => {
                     const toOpen = videoPath || outputDirectory;
-                    shell.openItem(toOpen);
+                    shell.openPath(toOpen);
                 },
             },
             {
@@ -134,7 +136,7 @@ export class DownloadTable extends Component<IDownloadTableProps, IDownloadTable
                     if (videoPath) {
                         shell.showItemInFolder(videoPath);
                     } else {
-                        shell.openItem(outputDirectory);
+                        shell.openPath(outputDirectory);
                     }
                 },
             },

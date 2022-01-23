@@ -1,4 +1,5 @@
 import { autoUpdater } from 'electron-updater';
+
 import { IpcMessage } from '../common/ipc-message';
 
 export class AppUpdater {

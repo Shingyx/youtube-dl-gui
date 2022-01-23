@@ -1,7 +1,8 @@
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 import fs from 'fs';
 import { toast } from 'react-toastify';
 import { promisify } from 'util';
+
 import { configPath } from './constants';
 
 interface IConfig {
@@ -18,28 +19,17 @@ export function getOutputDirectory(): string | undefined {
 
 export async function promptOutputDirectory({ missing }: { missing: boolean }): Promise<void> {
     if (missing) {
-        await new Promise((resolve) => {
-            remote.dialog.showMessageBox(
-                remote.getCurrentWindow(),
-                {
-                    type: 'info',
-                    message: 'Unknown output directory. Press OK to configure output directory.',
-                    buttons: ['OK'],
-                },
-                () => resolve(),
-            );
+        await remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+            type: 'info',
+            message: 'Unknown output directory. Press OK to configure output directory.',
+            buttons: ['OK'],
         });
     }
-    const directory = await new Promise<string | undefined>((resolve) => {
-        remote.dialog.showOpenDialog(
-            remote.getCurrentWindow(),
-            {
-                title: 'Output Directory',
-                properties: ['openDirectory'],
-            },
-            (filePaths) => resolve(filePaths ? filePaths[0] : undefined),
-        );
+    const { filePaths } = await remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+        title: 'Output Directory',
+        properties: ['openDirectory'],
     });
+    const directory = filePaths?.[0];
     if (directory) {
         config.outputDirectory = directory;
         await saveConfig();

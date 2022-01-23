@@ -1,6 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
 import { EventEmitter } from 'events';
 import path from 'path';
+
 import { ffmpegPath, ytDlpPath } from './constants';
 import { downloadString, sanitizeFilename } from './utilities';
 
@@ -42,9 +43,9 @@ export class VideoDownloadTask {
     public async download(): Promise<void> {
         await new Promise((resolve) => {
             const child = this.spawnDownloadProcess();
-            child.stdout.on('data', (data) => this.processData(data));
-            child.stderr.on('data', (data) => this.processData(data));
-            child.on('close', () => resolve());
+            child.stdout?.on('data', (data) => this.processData(data));
+            child.stderr?.on('data', (data) => this.processData(data));
+            child.on('close', () => resolve(undefined));
         });
         this.state.status = this.completeMessage;
         this.state.progress = 1;
@@ -77,10 +78,7 @@ export class VideoDownloadTask {
     }
 
     private processData(data: Buffer): void {
-        const lines = data
-            .toString()
-            .trim()
-            .split('\n');
+        const lines = data.toString().trim().split('\n');
         for (const line of lines) {
             this.processLine(line);
         }
@@ -146,7 +144,7 @@ export class VideoDownloadTask {
 
             const document = new DOMParser().parseFromString(response, 'text/html');
             const titleMeta = document.head.querySelector('meta[name="title"]');
-            const titleMetaContent = titleMeta && titleMeta.getAttribute('content');
+            const titleMetaContent = titleMeta?.getAttribute('content');
             if (titleMetaContent) {
                 videoTitle = titleMetaContent;
             }
