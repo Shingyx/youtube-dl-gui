@@ -9310,9 +9310,10 @@ yauzl@^2.10.0:
     buffer-crc32 "~0.2.3"
     fd-slicer "~1.1.0"
 
-"yt-dlp-dl@https://github.com/Shingyx/yt-dlp-dl":
+yt-dlp-dl@^1.0.0:
   version "1.0.0"
-  resolved "https://github.com/Shingyx/yt-dlp-dl#a411e23c001201a6dc8a5706267426e9a78cf6ec"
+  resolved "https://registry.yarnpkg.com/yt-dlp-dl/-/yt-dlp-dl-1.0.0.tgz#f8d02ccc2bf86ade16cea89aa7fcd6d362db0f93"
+  integrity sha512-VDJMlKtPpXE3l+Jzkd5RYZeL6UghrW+BSJSVrgvF10kIUnni7zO5q6cqBqoiEDyRjDVgKjGIbOrQ37kPPFNJgg==
   dependencies:
     node-fetch "^2.6.7"
     tslib "^2.3.1"
