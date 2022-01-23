@@ -17,6 +17,7 @@
   "dependencies": {
     "electron-updater": "^4.0.6",
     "electron-window-state": "^5.0.3",
+    "encoding": "^0.1.13",
     "node-fetch": "^2.6.7",
     "rc-progress": "^2.3.0",
     "react": "^16.8.3",
