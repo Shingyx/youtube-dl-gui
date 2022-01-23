@@ -1,3 +1,6 @@
+import 'react-virtualized/styles.css';
+import './DownloadTable.css';
+
 import { remote, shell } from 'electron';
 import path from 'path';
 import React, { Component } from 'react';
@@ -8,13 +11,11 @@ import {
     Table,
     WindowScroller,
 } from 'react-virtualized';
-import 'react-virtualized/styles.css';
+
 import { DownloadService } from '../lib/download-service';
 import { IVideoDownloadState } from '../lib/video-download';
-import './DownloadTable.css';
 
-// tslint:disable-next-line:no-var-requires
-const { Line } = require('rc-progress');
+const { Line } = require('rc-progress'); // eslint-disable-line @typescript-eslint/no-var-requires
 
 interface IDownloadTableProps {
     downloadService: DownloadService;

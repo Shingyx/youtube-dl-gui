@@ -1,9 +1,11 @@
+import './UrlEntry.css';
+
 import { clipboard } from 'electron';
 import React, { ChangeEvent, Component, FormEvent } from 'react';
+
 import { getOutputDirectory, promptOutputDirectory } from '../lib/config';
 import { DownloadService } from '../lib/download-service';
 import { defaultCatch, isValidUrl } from '../lib/utilities';
-import './UrlEntry.css';
 
 interface IUrlEntryProps {
     downloadService: DownloadService;

@@ -2,6 +2,7 @@ import { remote } from 'electron';
 import fs from 'fs';
 import { toast } from 'react-toastify';
 import { promisify } from 'util';
+
 import { configPath } from './constants';
 
 interface IConfig {

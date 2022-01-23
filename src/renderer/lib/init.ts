@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron';
 import fs from 'fs';
 import { toast } from 'react-toastify';
 import { promisify } from 'util';
+
 import { IpcMessage } from '../../common/ipc-message';
 import { loadConfig, promptOutputDirectory } from './config';
 import { binariesPath } from './constants';

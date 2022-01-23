@@ -1,6 +1,7 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import windowState from 'electron-window-state';
 import path from 'path';
+
 import { IpcMessage } from '../common/ipc-message';
 import { AppUpdater } from './app-updater';
 
