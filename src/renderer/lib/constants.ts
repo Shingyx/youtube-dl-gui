@@ -5,5 +5,5 @@ const userDataPath = remote.app.getPath('userData');
 
 export const binariesPath = path.join(userDataPath, 'bin');
 export const configPath = path.join(userDataPath, 'config.json');
-export const youTubeDlPath = path.join(binariesPath, 'youtube-dl.exe');
+export const ytDlpPath = path.join(binariesPath, 'yt-dlp.exe');
 export const ffmpegPath = path.join(binariesPath, 'ffmpeg.exe');

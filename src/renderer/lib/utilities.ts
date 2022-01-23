@@ -1,29 +1,15 @@
 import fs from 'fs';
 import fetch, { Response } from 'node-fetch';
-import path from 'path';
 import { toast } from 'react-toastify';
-import { promisify } from 'util';
 
 export async function downloadString(url: string): Promise<string> {
     const response = await wrappedFetch(url);
     return response.text();
 }
 
-export async function downloadJson(url: string): Promise<any> {
-    const response = await wrappedFetch(url);
-    return response.json();
-}
-
 export async function downloadBuffer(url: string): Promise<Buffer> {
     const response = await wrappedFetch(url);
     return response.buffer();
-}
-
-export async function downloadFile(url: string, pathPrefix: string): Promise<string> {
-    const buffer = await downloadBuffer(url);
-    const filename = path.join(pathPrefix, extractFilename(url));
-    await promisify(fs.writeFile)(filename, buffer);
-    return filename;
 }
 
 /**

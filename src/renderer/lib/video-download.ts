@@ -1,7 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
 import { EventEmitter } from 'events';
 import path from 'path';
-import { ffmpegPath, youTubeDlPath } from './constants';
+import { ffmpegPath, ytDlpPath } from './constants';
 import { downloadString, sanitizeFilename } from './utilities';
 
 const INITIALIZING = 'Initializing';
@@ -64,7 +64,7 @@ export class VideoDownloadTask {
     }
 
     private spawnDownloadProcess(): ChildProcess {
-        return spawn(youTubeDlPath, [
+        return spawn(ytDlpPath, [
             '--ffmpeg-location',
             ffmpegPath,
             '-o',

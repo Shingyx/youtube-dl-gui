@@ -1,46 +1,16 @@
-import { execFile } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { toast } from 'react-toastify';
-import { promisify } from 'util';
 import yauzl from 'yauzl';
-import { binariesPath, ffmpegPath, youTubeDlPath } from './constants';
-import {
-    downloadBuffer,
-    downloadFile,
-    downloadJson,
-    existsAsync,
-    extractFilename,
-} from './utilities';
+import { downloadYtDlp as ytDlpDl } from 'yt-dlp-dl';
+import { binariesPath, ffmpegPath } from './constants';
+import { downloadBuffer, existsAsync, extractFilename } from './utilities';
 
-export async function downloadYouTubeDl(): Promise<void> {
-    const releaseJsonPromise = downloadJson(
-        'https://api.github.com/repos/rg3/youtube-dl/releases/latest',
-    );
-
-    if (await existsAsync(youTubeDlPath)) {
-        let installedVersion: string | undefined;
-        try {
-            const { stdout } = await promisify(execFile)(youTubeDlPath, ['--version']);
-            installedVersion = stdout.trim();
-        } catch {
-            toast.error('Failed to read installed youtube-dl version');
-        }
-        if (installedVersion && installedVersion === (await releaseJsonPromise).tag_name) {
-            return; // youtube-dl up to date
-        }
-        toast('Updating youtube-dl...');
-    } else {
-        toast('Downloading youtube-dl...');
-    }
-
-    const youTubeDlUrl = (await releaseJsonPromise).assets.find(
-        (a: any) => a.name === 'youtube-dl.exe',
-    ).browser_download_url;
-
-    await downloadFile(youTubeDlUrl, binariesPath);
-
-    toast('youtube-dl download complete');
+export async function downloadYtDlp(): Promise<void> {
+    return ytDlpDl(binariesPath, {
+        info: toast,
+        error: toast.error,
+    });
 }
 
 export async function downloadFfmpeg(): Promise<void> {
@@ -51,7 +21,7 @@ export async function downloadFfmpeg(): Promise<void> {
     toast('Downloading ffmpeg...');
 
     const zipBuffer = await downloadBuffer(
-        'https://ffmpeg.zeranoe.com/builds/win64/shared/ffmpeg-4.1-win64-shared.zip',
+        'https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-n4.4-latest-win64-gpl-shared-4.4.zip',
     );
 
     await new Promise((resolve, reject) => {
@@ -59,7 +29,7 @@ export async function downloadFfmpeg(): Promise<void> {
             if (err || !zipFile) {
                 return reject(err);
             }
-            const entryRegex = /\/bin\/(.+\.dll|ffmpeg\.exe)$/;
+            const entryRegex = /\/bin\/(.+\.dll|(ffmpeg|ffprobe)\.exe)$/;
             zipFile.readEntry();
             zipFile
                 .on('error', reject)
