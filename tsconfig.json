@@ -6,6 +6,7 @@
       "dom"
     ],
     "jsx": "react",
-    "noImplicitReturns": false
+    "noImplicitReturns": false,
+    "useUnknownInCatchVariables": false
   }
 }

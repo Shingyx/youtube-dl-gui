@@ -27,7 +27,7 @@ export async function promptOutputDirectory({ missing }: { missing: boolean }): 
                     message: 'Unknown output directory. Press OK to configure output directory.',
                     buttons: ['OK'],
                 },
-                () => resolve(),
+                () => resolve(undefined),
             );
         });
     }

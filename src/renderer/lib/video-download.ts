@@ -45,7 +45,7 @@ export class VideoDownloadTask {
             const child = this.spawnDownloadProcess();
             child.stdout.on('data', (data) => this.processData(data));
             child.stderr.on('data', (data) => this.processData(data));
-            child.on('close', () => resolve());
+            child.on('close', () => resolve(undefined));
         });
         this.state.status = this.completeMessage;
         this.state.progress = 1;
@@ -78,10 +78,7 @@ export class VideoDownloadTask {
     }
 
     private processData(data: Buffer): void {
-        const lines = data
-            .toString()
-            .trim()
-            .split('\n');
+        const lines = data.toString().trim().split('\n');
         for (const line of lines) {
             this.processLine(line);
         }
