@@ -5,7 +5,8 @@
   "license": "MIT",
   "author": "Su-Shing Chen",
   "scripts": {
-    "dist": "electron-webpack && electron-builder",
+    "build": "electron-webpack",
+    "dist": "yarn build && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store",
     "format": "yarn lint --fix && yarn prettier --write",
     "prettier": "prettier --check \"{src,test}/**/*.{ts,tsx,css}\"",
