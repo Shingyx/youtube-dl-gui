@@ -1,6 +1,6 @@
 # youtube-dl-gui
 
-[![Build Status](https://travis-ci.com/Shingyx/youtube-dl-gui.svg?branch=master)](https://travis-ci.com/Shingyx/youtube-dl-gui)
+[![Build/release](https://github.com/Shingyx/youtube-dl-gui/actions/workflows/build.yml/badge.svg)](https://github.com/Shingyx/youtube-dl-gui/actions/workflows/build.yml)
 
 _youtube-dl-gui_ is a simple application to download YouTube videos as MP4 files. It's a GUI for the popular ~~[youtube-dl](https://github.com/rg3/youtube-dl)~~ [yt-dlp](https://github.com/yt-dlp/yt-dlp) tool, developed in React and Electron.
 
