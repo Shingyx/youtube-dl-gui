@@ -5,7 +5,7 @@ import { promisify } from 'util';
 import { IpcMessage } from '../../common/ipc-message';
 import { loadConfig, promptOutputDirectory } from './config';
 import { binariesPath } from './constants';
-import { downloadFfmpeg, downloadYouTubeDl } from './dependency-updaters';
+import { downloadFfmpeg, downloadYtDlp } from './dependency-updaters';
 import { defaultCatch, existsAsync } from './utilities';
 
 export const initPromise = init().catch((e) => {
@@ -29,5 +29,5 @@ async function init(): Promise<void> {
     if (!(await existsAsync(binariesPath))) {
         await promisify(fs.mkdir)(binariesPath);
     }
-    await Promise.all([downloadYouTubeDl(), downloadFfmpeg(), loadConfig()]);
+    await Promise.all([downloadYtDlp(), downloadFfmpeg(), loadConfig()]);
 }

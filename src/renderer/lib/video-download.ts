@@ -1,7 +1,7 @@
 import { ChildProcess, spawn } from 'child_process';
 import { EventEmitter } from 'events';
 import path from 'path';
-import { ffmpegPath, youTubeDlPath } from './constants';
+import { ffmpegPath, ytDlpPath } from './constants';
 import { downloadString, sanitizeFilename } from './utilities';
 
 const INITIALIZING = 'Initializing';
@@ -64,7 +64,7 @@ export class VideoDownloadTask {
     }
 
     private spawnDownloadProcess(): ChildProcess {
-        return spawn(youTubeDlPath, [
+        return spawn(ytDlpPath, [
             '--ffmpeg-location',
             ffmpegPath,
             '-o',
@@ -141,16 +141,14 @@ export class VideoDownloadTask {
     private async fetchVideoTitle(videoId: string): Promise<void> {
         let videoTitle;
         try {
-            const videoInfoUrl = `https://youtube.com/get_video_info?video_id=${videoId}`;
-            const response = await downloadString(videoInfoUrl);
-            for (const query of response.split('&')) {
-                const [key, value] = query.split('=');
-                if (key === 'player_response') {
-                    const decoded = decodeURIComponent(value.replace(/\+/g, '%20'));
-                    const json = JSON.parse(decoded);
-                    videoTitle = json.videoDetails.title;
-                    break;
-                }
+            const videoUrl = `https://youtube.com/watch?v=${videoId}`;
+            const response = await downloadString(videoUrl);
+
+            const document = new DOMParser().parseFromString(response, 'text/html');
+            const titleMeta = document.head.querySelector('meta[name="title"]');
+            const titleMetaContent = titleMeta && titleMeta.getAttribute('content');
+            if (titleMetaContent) {
+                videoTitle = titleMetaContent;
             }
         } catch {
             // it tried
