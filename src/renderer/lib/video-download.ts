@@ -43,8 +43,8 @@ export class VideoDownloadTask {
     public async download(): Promise<void> {
         await new Promise((resolve) => {
             const child = this.spawnDownloadProcess();
-            child.stdout.on('data', (data) => this.processData(data));
-            child.stderr.on('data', (data) => this.processData(data));
+            child.stdout?.on('data', (data) => this.processData(data));
+            child.stderr?.on('data', (data) => this.processData(data));
             child.on('close', () => resolve(undefined));
         });
         this.state.status = this.completeMessage;
@@ -144,7 +144,7 @@ export class VideoDownloadTask {
 
             const document = new DOMParser().parseFromString(response, 'text/html');
             const titleMeta = document.head.querySelector('meta[name="title"]');
-            const titleMetaContent = titleMeta && titleMeta.getAttribute('content');
+            const titleMetaContent = titleMeta?.getAttribute('content');
             if (titleMetaContent) {
                 videoTitle = titleMetaContent;
             }
