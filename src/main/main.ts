@@ -1,4 +1,5 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import * as remoteMain from '@electron/remote/main';
+import { app, BrowserWindow, Menu, nativeTheme } from 'electron';
 import windowState from 'electron-window-state';
 import path from 'path';
 
@@ -12,18 +13,26 @@ const appUpdater = new AppUpdater(sendMessageToWindow, isDevelopment);
 let mainWindow: BrowserWindow | undefined;
 
 app.on('ready', () => {
+    remoteMain.initialize();
+
     const mainWindowState = windowState({
         defaultWidth: 800,
         defaultHeight: 600,
     });
 
+    nativeTheme.themeSource = 'light';
     mainWindow = new BrowserWindow({
         title: 'YouTube DL GUI',
         x: mainWindowState.x,
         y: mainWindowState.y,
         width: mainWindowState.width,
         height: mainWindowState.height,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
     });
+    remoteMain.enable(mainWindow.webContents);
 
     mainWindowState.manage(mainWindow);
 
@@ -66,7 +75,10 @@ app.on('ready', () => {
     Menu.setApplicationMenu(menu);
 
     void appUpdater.checkForUpdates(false).finally(() => {
-        menu.getMenuItemById('check-updates').enabled = true;
+        const checkUpdatesMenuItem = menu.getMenuItemById('check-updates');
+        if (checkUpdatesMenuItem) {
+            checkUpdatesMenuItem.enabled = true;
+        }
     });
 });
 

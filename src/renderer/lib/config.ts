@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 import fs from 'fs';
 import { toast } from 'react-toastify';
 import { promisify } from 'util';

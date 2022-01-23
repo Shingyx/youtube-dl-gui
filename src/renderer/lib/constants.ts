@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 import path from 'path';
 
 const userDataPath = remote.app.getPath('userData');

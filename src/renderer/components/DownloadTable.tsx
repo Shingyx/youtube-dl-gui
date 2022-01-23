@@ -1,7 +1,8 @@
 import 'react-virtualized/styles.css';
 import './DownloadTable.css';
 
-import { remote, shell } from 'electron';
+import * as remote from '@electron/remote';
+import { shell } from 'electron';
 import path from 'path';
 import React, { Component } from 'react';
 import {
@@ -126,7 +127,7 @@ export class DownloadTable extends Component<IDownloadTableProps, IDownloadTable
                 enabled: done,
                 click: () => {
                     const toOpen = videoPath || outputDirectory;
-                    shell.openItem(toOpen);
+                    shell.openPath(toOpen);
                 },
             },
             {
@@ -135,7 +136,7 @@ export class DownloadTable extends Component<IDownloadTableProps, IDownloadTable
                     if (videoPath) {
                         shell.showItemInFolder(videoPath);
                     } else {
-                        shell.openItem(outputDirectory);
+                        shell.openPath(outputDirectory);
                     }
                 },
             },
