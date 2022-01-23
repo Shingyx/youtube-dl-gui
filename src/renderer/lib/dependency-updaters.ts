@@ -9,8 +9,14 @@ import { downloadBuffer, existsAsync, extractFilename } from './utilities';
 
 export async function downloadYtDlp(): Promise<void> {
     return ytDlpDl(binariesPath, {
-        info: toast,
-        error: toast.error,
+        info(message) {
+            if (!message.includes('already up to date')) {
+                toast(message);
+            }
+        },
+        error(message) {
+            toast.error(message);
+        },
     });
 }
 
