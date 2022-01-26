@@ -8,7 +8,7 @@ import { binariesPath, ffmpegPath } from './constants';
 import { downloadBuffer, existsAsync, extractFilename } from './utilities';
 
 export async function downloadYtDlp(): Promise<void> {
-  return ytDlpDl(binariesPath, {
+  await ytDlpDl(binariesPath, {
     info(message) {
       if (!message.includes('already up to date')) {
         toast(message);
