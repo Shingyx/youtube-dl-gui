@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
-    "electron-updater": "^4.6.1",
+    "electron-updater": "^6.3.0",
     "electron-window-state": "^5.0.3",
     "encoding": "^0.1.13",
     "node-fetch": "^2.6.7",
