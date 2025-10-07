@@ -121,7 +121,7 @@ async function refreshRemoteConfig(): Promise<IRemoteConfig | undefined> {
 }
 
 function isValidRemoteConfig(remoteConfig: any): remoteConfig is IRemoteConfig {
-  const ffmpegUrl = remoteConfig.ffmpegUrl;
+  const ffmpegUrl = remoteConfig?.ffmpegUrl;
   return (
     typeof ffmpegUrl === 'string' &&
     ffmpegUrl.startsWith('https://github.com/yt-dlp/FFmpeg-Builds/releases/download/') &&
