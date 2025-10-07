@@ -1,6 +1,6 @@
 {
   "name": "youtube-dl-gui",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "GUI for yt-dlp",
   "repository": "https://github.com/Shingyx/youtube-dl-gui",
   "license": "MIT",
