@@ -89,7 +89,7 @@ export class VideoDownloadTask {
     const parts = line.split(/\s+/);
     switch (parts[0]) {
       case '[youtube]': {
-        if (!this.videoId) {
+        if (!this.videoId && parts[1].endsWith(':')) {
           this.videoId = parts[1].slice(0, -1);
           void this.fetchVideoTitle(this.videoId);
         }
