@@ -78,10 +78,10 @@ export async function loadConfig(): Promise<void> {
       if (typeof configJson.downloadedFfmpegUrl === 'string') {
         config.downloadedFfmpegUrl = configJson.downloadedFfmpegUrl;
       }
-      if (isValidRemoteConfig(configJson.remoteConfig.value)) {
+      if (isValidRemoteConfig(configJson.remoteConfig?.value)) {
         config.remoteConfig.value = configJson.remoteConfig.value;
       }
-      if (typeof configJson.remoteConfig.lastCheckTime === 'number') {
+      if (typeof configJson.remoteConfig?.lastCheckTime === 'number') {
         config.remoteConfig.lastCheckTime = configJson.remoteConfig.lastCheckTime;
       }
     }
