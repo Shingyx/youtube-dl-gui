@@ -7,3 +7,6 @@ export const binariesPath = path.join(userDataPath, 'bin');
 export const configPath = path.join(userDataPath, 'config.json');
 export const ytDlpPath = path.join(binariesPath, 'yt-dlp.exe');
 export const ffmpegPath = path.join(binariesPath, 'ffmpeg.exe');
+
+export const remoteConfigUrl =
+  'https://raw.githubusercontent.com/Shingyx/youtube-dl-gui/refs/heads/master/static/remote-config.json';
