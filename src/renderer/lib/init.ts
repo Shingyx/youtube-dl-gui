@@ -30,5 +30,6 @@ async function init(): Promise<void> {
   if (!(await existsAsync(binariesPath))) {
     await promisify(fs.mkdir)(binariesPath);
   }
-  await Promise.all([downloadYtDlp(), downloadFfmpeg(), loadConfig()]);
+  await loadConfig();
+  await Promise.all([downloadYtDlp(), downloadFfmpeg()]);
 }

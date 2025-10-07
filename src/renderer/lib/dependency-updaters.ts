@@ -1,11 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import { toast } from 'react-toastify';
+import { promisify } from 'util';
 import yauzl from 'yauzl';
 import { downloadYtDlp as ytDlpDl } from 'yt-dlp-dl';
 
+import { getDownloadedFfmpegUrl, getRemoteFfmpegUrl, setDownloadedFfmpegUrl } from './config';
 import { binariesPath, ffmpegPath } from './constants';
-import { loadRemoteConfig } from './remote-config';
 import { downloadBuffer, existsAsync, extractFilename } from './utilities';
 
 export async function downloadYtDlp(): Promise<void> {
@@ -22,20 +23,31 @@ export async function downloadYtDlp(): Promise<void> {
 }
 
 export async function downloadFfmpeg(): Promise<void> {
-  if (await existsAsync(ffmpegPath)) {
+  const ffmpegUrl = getRemoteFfmpegUrl();
+  const existingFfmpegUrl = getDownloadedFfmpegUrl();
+  if ((await existsAsync(ffmpegPath)) && (ffmpegUrl === existingFfmpegUrl || !ffmpegUrl)) {
+    // no update required (or possible)
+    return;
+  }
+
+  if (!ffmpegUrl) {
+    toast.error('Error downloading ffmpeg');
     return;
   }
 
   toast('Downloading ffmpeg...');
 
-  const remoteConfig = await loadRemoteConfig();
-  if (!remoteConfig) {
-    toast.error('Error downloading ffmpeg');
-    return;
+  // clean up existing install
+  const existingFilesRegex = /(.+\.dll|(ffmpeg|ffprobe)\.exe)$/;
+  const files = await promisify(fs.readdir)(binariesPath);
+  for (const file of files) {
+    if (existingFilesRegex.test(file)) {
+      await promisify(fs.unlink)(path.join(binariesPath, file));
+    }
   }
 
-  const zipBuffer = await downloadBuffer(remoteConfig.ffmpegUrl);
-
+  // download and unzip
+  const zipBuffer = await downloadBuffer(ffmpegUrl);
   await new Promise((resolve, reject) => {
     yauzl.fromBuffer(zipBuffer, { lazyEntries: true }, (err, zipFile) => {
       if (err || !zipFile) {
@@ -66,6 +78,8 @@ export async function downloadFfmpeg(): Promise<void> {
         .on('end', resolve);
     });
   });
+
+  setDownloadedFfmpegUrl(ffmpegUrl);
 
   toast('ffmpeg download complete');
 }
