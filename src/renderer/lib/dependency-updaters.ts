@@ -5,6 +5,7 @@ import yauzl from 'yauzl';
 import { downloadYtDlp as ytDlpDl } from 'yt-dlp-dl';
 
 import { binariesPath, ffmpegPath } from './constants';
+import { loadRemoteConfig } from './remote-config';
 import { downloadBuffer, existsAsync, extractFilename } from './utilities';
 
 export async function downloadYtDlp(): Promise<void> {
@@ -27,9 +28,13 @@ export async function downloadFfmpeg(): Promise<void> {
 
   toast('Downloading ffmpeg...');
 
-  const zipBuffer = await downloadBuffer(
-    'https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-n4.4-latest-win64-gpl-shared-4.4.zip',
-  );
+  const remoteConfig = await loadRemoteConfig();
+  if (!remoteConfig) {
+    toast.error('Error downloading ffmpeg');
+    return;
+  }
+
+  const zipBuffer = await downloadBuffer(remoteConfig.ffmpegUrl);
 
   await new Promise((resolve, reject) => {
     yauzl.fromBuffer(zipBuffer, { lazyEntries: true }, (err, zipFile) => {
