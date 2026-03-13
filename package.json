@@ -33,7 +33,7 @@
     "react-toastify": "^4.5.2",
     "react-virtualized": "^9.21.0",
     "source-map-support": "^0.5.21",
-    "yauzl": "^2.10.0",
+    "yauzl": "^3.2.1",
     "yt-dlp-dl": "^1.0.1"
   },
   "devDependencies": {
