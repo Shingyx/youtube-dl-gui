@@ -37,7 +37,7 @@
     "yt-dlp-dl": "^1.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.12",
+    "@babel/core": "^7.29.6",
     "@babel/preset-react": "^7.16.7",
     "@types/jest": "^27.4.0",
     "@types/node": "^16.11.21",
